@@ -29,6 +29,31 @@ https://github.com/The-Art-of-Hacking/h4cker/
 
 
 
+PCI DSS:
+La regulación del Estándar de seguridad de datos de la industria de tarjetas de pago (PCI DSS) tiene como objetivo proteger el procesamiento de los pagos con tarjeta de crédito y otros tipos de pagos digitales. 
+Puede acceder a las especificaciones, la documentación y los recursos de las PCI DSS en https://www.pcisecuritystandards.org
+
+HIPAA:
+La intención original de la regulación de la Ley de Portabilidad y Responsabilidad de los Seguros de Salud de 1996 (HIPAA) era simplificar y estandarizar los procesos administrativos de los servicios de salud. 
+La simplificación administrativa requería la transición de registros y transacciones en papel a registros y transacciones electrónicos. 
+Al Departamento de Salud y Servicios Humanos (HHS) de los EE. UU. se le encargó desarrollar y publicar estándares para proteger la información de salud electrónica de un individuo y permitir el acceso y el uso adecuados de esa información por parte de los proveedores de servicios de salud y otras entidades. 
+Puede obtener información sobre la HIPAA en https://www.cdc.gov/phlp/publications/topic/hipaa.html.
+
+FedRAMP:
+El gobierno federal de los Estados Unidos utiliza el estándar del Programa Federal de Administración de Riesgos y Autorizaciones (FedRAMP) para autorizar el uso de las ofertas de servicios en la nube. 
+Puede obtener información sobre FedRAMP en https://www.fedramp.gov.
+
+Reglamento general de protección de datos (GDPR):
+Fortalecer y unificar la protección de datos para las personas dentro de la Unión Europea (UE)
+Dar a los ciudadanos el control de sus datos personales. Puede obtener información adicional sobre el GDPR en https://gdpr-info.eu.
+
+
+
+
+
+
+
+
 
 
 
