@@ -1,0 +1,69 @@
+blackarch = dirigida a investigadores de seguridad y revisores de pruebas de penetración
+parrotsec.org = dirigida a investigadores de seguridad y revisores de pruebas de penetración
+
+Para ilustrar el uso de privilegios de raíz
+└─$ visudo
+
+Para elevar temporalmente su permiso de acceso raíz, ingrese sudo visudo en el indicador
+└─$ sudo visudo
+
+Permiten que cualquier usuario del grupo sudo ejecute cualquier comando. Presione Ctrl + x para salir del archivo y no guarde los cambios
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
+
+Verifique que el usuario kali sea parte del grupo sudo
+└─$ grep sudo /etc/group
+sudo:x:27:kali
+
+El historial de comandos
+└─$ history
+
+mv           Mueve o cambia el nombre de archivos y directorios.
+chmod        Modifica los permisos de archivo.
+chown        Cambia el propietario de un archivo.
+dd            Copia datos de un lugar en otro.
+pwd          Muestra el nombre del directorio actual.
+ps            Enlista los procesos del sistema que están actualmente en ejecución
+su            Simula un inicio de sesión como otro usuario o para convertirse en superusuario.
+sudo          Ejecuta un comando como superusuario, de forma predeterminada, u otro usuario nombrado.
+grep          Se utiliza para buscar cadenas de caracteres específicas dentro de un archivo o de las salidas de otros comandos.
+ifconfig      Se utiliza para mostrar o configurar la información relacionada con la tarjeta de red. Si se emite sin parámetros, ifconfig mostrará la configuración actual de las tarjetas de red.Nota: Aunque todavía está ampliamente en uso, este comando está en desuso. Utilice la ip address en su lugar.
+apt-get        Se utiliza para instalar, configurar y eliminar paquetes en Debian y sus derivados.
+iwconfig        Se utiliza para mostrar o configurar la información relacionada con la tarjeta de red inalámbrica.
+shutdown        Apaga la computadora. Se puede indicar a shutdown que realice varias tareas relacionadas con el apagado, incluyendo reiniciar, detener, poner en suspensión o expulsar a todos los usuarios conectados actualmente.
+passwd        Se utiliza para cambiar la contraseña. Si no se proporcionan parámetros, passwd cambia la contraseña del usuario actual.
+cat            Se utiliza para enumerar el contenido de un archivo y espera el nombre de archivo como parámetro.
+man            Se utiliza para mostrar la documentación para un comando específico.
+
+Is              Muestra los archivos dentro de un directorio.
+G&
+cd              Cambia el directorio actual.
+mkdir            Crea un directorio.
+cp              Copia archivos de origen a destino.
+mv              Mueve o cambia el nombre de archivos y directorios.
+rm              Elimina archivos y directorios.
+grep            Busca cadenas de caracteres específicas dentro de un archivo o de las salidas de otros comandos.
+cat             Enumera el contenido de un archivo y espera el nombre de archivo como el parámetro.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
