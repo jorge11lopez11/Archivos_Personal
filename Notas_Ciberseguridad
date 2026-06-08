@@ -57,6 +57,148 @@ Privacidad de GDPR y la Ley de Privacidad del Consumidor de California (CCPA), q
 El Marco de Evaluación de la Seguridad de los Sistemas de Información (ISSAF) es una metodología de penetración con las siguientes fases: recopilación de información, asignación de red, identificación de vulnerabilidades, penetración, obtención de acceso y escalamiento de privilegios, enumeración adicional, compromiso de usuarios / sitios remotos, mantener el acceso y cobertura.
 
 
+Conceptos legales:
+->Acuerdo de nivel de servicio (SLA):
+Un SLA es una expectativa o restricción bien documentada relacionada con una o más de las medidas de rendimiento mínimas o máximas (como calidad, línea de tiempo / plazo y costo) del servicio de pruebas de penetración. 
+->Confidencialidad
+Debe analizar y acordar el manejo de datos confidenciales.
+->Declaración de trabajo (SOW):
+Un SOW es un documento que especifica las actividades que se realizarán durante un compromiso de prueba de penetración. Se puede utilizar para definir algunos de los siguientes elementos:
+Líneas de tiempo del proyecto (pruebas de penetración), incluido el cronograma de entrega de informes
+El alcance del trabajo a realizar
+La ubicación del trabajo (ubicación geográfica o ubicación de red)
+Requisitos técnicos y no técnicos especiales
+Calendario de pagos
+Elementos varios que pueden no ser parte de la negociación principal, pero que deben enumerarse y rastrearse porque podrían plantear problemas durante la interacción general
+El SOW puede ser un documento independiente o puede ser parte de un acuerdo de servicio maestro (MSA).
+->Acuerdo de servicio maestro (MSA):
+Los MSA, que son muy populares en la actualidad, son contratos que se pueden utilizar para negociar rápidamente el trabajo que se realizará. Cuando existe un acuerdo maestro, no es necesario renegociar los mismos términos cada vez que realiza un trabajo para un cliente. Los MSA son especialmente beneficiosos cuando realiza una prueba de penetración y sabe que lo volverán a contratar de manera recurrente para realizar pruebas adicionales en otras áreas de la empresa o para verificar que la postura de seguridad de la organización haya mejorado como resultado de pruebas y correcciones previas.
+->Acuerdo de no divulgación (NDA):
+Un NDA es un documento legal y un contrato entre usted y una organización que lo ha contratado como evaluador de penetración. Un NDA especifica y define material, conocimiento e información confidencial que no debe divulgarse y que ambas partes deben mantener confidencial. Los NDA se pueden clasificar como cualquiera de los siguientes:
+Unilateral: con un NDA unilateral, solo una parte divulga cierta información a la otra parte, y la información debe mantenerse protegida y no divulgada. Por ejemplo, una organización que le contrata debe incluir en un NDA determinada información que no debe divulgar. Por supuesto, todos sus hallazgos deben mantenerse en secreto y no deben revelarse a ninguna otra organización o individuo.
+Bilateral: un NDA bilateral también se denomina NDA mutuo o bidireccional. En un NDA bilateral, ambas partes comparten información confidencial entre sí y esta información no debe revelarse a ninguna otra entidad.
+Multilateral: este tipo de NDA involucra a tres o más partes, y al menos una de las partes divulga información confidencial que no debe revelarse a ninguna entidad fuera del acuerdo. Los NDA multilaterales se utilizan en el caso de que una organización externa a su cliente (Socio comercial, proveedor de servicios, etc.) también deba participar en la prueba de penetración.
+
+Contratos:
+El contrato es uno de los documentos más importantes en un compromiso de prueba de penetración. Especifica los términos de acuerdo y cómo se le pagará, y proporciona documentación clara de los servicios que se realizarán. Un contrato debe ser muy específico, fácil de entender y sin ambigüedades. Cualquier ambigüedad probablemente generará insatisfacción y fricción de cliente. Siempre se recomienda el asesoramiento legal (de un abogado) para cualquier contrato.
+Su cliente también puede contratar a su departamento legal o una agencia externa para revisar el contrato. Un cliente puede especificar y exigir que la información recopilada o analizada durante el compromiso de la prueba de penetración no esté disponible fuera de país donde realizó la prueba. Además, el cliente puede especificar que usted (como evaluador de penetración) no puede eliminar información de identificación personal (PII) que pueda estar sujeta a leyes o regulaciones específicas sin primero comprometerse a regirse por esas leyes y regulaciones o sin la autorización por escrito de la empresa. Su cliente también revisará el contrato o acuerdo de prueba de penetración para asegurarse de que no permita más riesgo de que se pretende resolver.
+
+Descargos de responsabilidad:
+Es posible que desee agregar exenciones de responsabilidad a su documentación previa a la participación, así como en el informe final. Por ejemplo, puede especificar que realizó pruebas de penetración en las aplicaciones y los sistemas que existían en una fecha claramente establecida. Las amenazas de ciberseguridad siempre cambian y se descubren nuevas vulnerabilidades a diario. Ningún software, hardware o tecnología es inmune a las vulnerabilidades de seguridad, sin importar cuántas pruebas de seguridad se realicen.
+También debe especificar que el informe de pruebas de penetración solo proporciona documentación y que su cliente determinará la mejor manera de corregir cualquier vulnerabilidad. Además, debe incluir una exención de responsabilidad de que su informe de pruebas de penetración no puede proteger y no protege contra pérdidas personales o comerciales como resultado del uso de las aplicaciones o los sistemas descritos en el mismo.
+Otra exención de responsabilidad estándar es que usted (o sus organizaciones) no brindan garantías, representaciones o certificaciones legales con respecto a las aplicaciones o los sistemas que se probaron o se probarán. Una exención de responsabilidad puede decir que su informe de pruebas de penetración no representa ni garantiza que la aplicación probada sea adecuada para la tarea y esté libre de otras vulnerabilidades o defectos funcionales además de los informados. Además, es estándar incluir una exención de responsabilidad que indique que dichos sistemas cumplen totalmente con los estándares de la industria o son totalmente compatibles con cualquier sistema operativo, hardware u otra aplicación.
+
+
+
+Lista de objetivos y activos dentro del alcance:
+
+->SOAP:
+Archivos de proyecto del Protocolo Pimple de Acceso a Objetos (SOAP): SOAP es un estándar de API que se basa en XML y esquemas relacionados. Las especificaciones basadas en XML se rigen por documentos de definición de esquema XML (XSD). Tener una buena referencia de lo que admite una API específica puede ser muy beneficioso para un evaluador de penetración y acelerará las pruebas. Se puede acceder a la especificación SOAP en https://www.w3.org/TR/soap.
+
+->Swagger:
+La documentación de Swagger (OpenAPI) es un marco moderno de documentación y desarrollo de API que ahora es la base de la especificación de OpenAPI (OAS). Estos documentos se utilizan en las API de transferencia de estado representacional (REST). REST es un estilo de arquitectura de software diseñado para guiar el desarrollo de la arquitectura de servicios web (incluidas las API). Las API REST o “RESTful” son los tipos más comunes de API que se utilizan en la actualidad. Los documentos de Swagger pueden ser extremadamente beneficiosos al probar las API. Puede obtener información adicional sobre Swagger en https://swagger.io. OAS está disponible en https://github.com/OAI/OpenAPI-Specification.
+
+->WSDL:
+El lenguaje de descripción de servicios web (WSDL) es un lenguaje basado en XML que se utiliza para documentar la funcionalidad de un servicio web. Se puede acceder a la especificación WSDL en https://www.w3.org/TR/wsdl20-primer.
+
+->GraphQL:
+GraphQL es un lenguaje de consulta para API. También es un tiempo de ejecución del lado del servidor para ejecutar consultas mediante un sistema de tipos que defina para sus datos. Se puede acceder a información técnica adicional sobre GraphQL en https://graphql.org/learn.
+
+->WADL:
+El lenguaje de descripción de aplicaciones web (WADL) es un lenguaje basado en XML para describir aplicaciones web. La especificación WADL se puede obtener en https://www.w3.org/Submission/wadl.
+
+
+Lista de objetivos y activos dentro del alcance:
+->Kit de desarrollo de software (SDK) para aplicaciones específicas:
+Un SDK, o devkit, es un conjunto de herramientas de desarrollo de software que se pueden utilizar para interactuar e implementar un marco de software, un sistema operativo o una plataforma de hardware. Los SDK también pueden ayudar a los evaluadores de penetración a comprender ciertas aplicaciones especializadas y plataformas de hardware dentro de la organización que se está probando.
+->Acceso al código fuente:
+Algunas organizaciones pueden permitirle obtener acceso al código fuente de las aplicaciones que se probarán.
+->Ejemplos de solicitudes de aplicación:
+En la mayoría de los casos, podrá revelar el contexto mediante el uso de herramientas de prueba de aplicaciones web, como proxies como Burp Suite y OWASP Zed Attack Proxy (ZAP). Obtendrá más información sobre estas herramientas en el Módulo 6, “Aprovechamiento de las vulnerabilidades basadas en aplicaciones”, y en el Módulo 10, “Herramientas y análisis de código”.
+->Diagramas de arquitectura de sistemas y redes:
+Estos documentos pueden ser muy beneficiosos para los evaluadores de penetración y pueden usarse para documentar y definir qué sistemas están dentro del alcance durante las pruebas.
+
+
+
+Pruebas de entorno desconocido:
+En este tipo de prueba (anteriormente conocida como prueba de penetración de caja negra), al evaluador generalmente se le proporciona solo una cantidad muy limitada de información. Por ejemplo, al evaluador se le pueden proporcionar solo los nombres de dominio y las direcciones IP que están dentro del alcance de un objetivo en particular. La idea de este tipo de limitación es que el evaluador comience con la perspectiva que podría tener un atacante externo. Por lo general, un atacante primero determinaría un objetivo y luego comenzaría a recopilar información sobre el objetivo, utilizando información pública y obteniendo cada vez más información para usar en los ataques. El evaluador no tendría conocimientos previos de la organización y la infraestructura del objetivo. Otro aspecto de las pruebas en entornos desconocidos es que, a veces, es posible que el personal de soporte de la red del objetivo no reciba información sobre cuándo se realizará exactamente la prueba. Esto permite que se lleve a cabo un ejercicio de defensa y también elimina el problema de que un objetivo se prepare para la prueba y no ofrezca una visión del mundo real de la postura de seguridad.
+Pruebas de entorno conocido:
+En este tipo de prueba (antes conocida como prueba de penetración de caja blanca), el evaluador comienza con una cantidad significativa de información sobre la organización y su infraestructura. El evaluador normalmente recibe cosas como diagramas de red, direcciones IP, configuraciones y un conjunto de credenciales de usuario. Si el alcance incluye una evaluación de la aplicación, es posible que al evaluador también se le proporcione el código fuente de la aplicación de destino. La idea de este tipo de pruebas es identificar tantos agujeros de seguridad como sea posible.
+
+
+
+->Verificación de antecedentes de los equipos de pruebas de penetración:
+Un cliente puede requerir que usted y su equipo se sometan a una cuidadosa verificación de antecedentes, según el entorno y la participación. Las organizaciones a veces requieren estas verificaciones de antecedentes para sentirse cómodas con los equipos de pruebas de penetración a los que permiten acceder a su entorno e información. Sus clientes pueden verificar sus credenciales y asegurarse de que tiene las habilidades para hacer que su red sea más segura al encontrar vulnerabilidades que podrían ser aprovechadas por atacantes maliciosos.
+->Cumplimiento del alcance específico del compromiso:
+Ya ha aprendido sobre la importancia del alcance adecuado de la participación de pruebas de penetración. Puede haber elementos de alcance específicos de la empresa que debe tener en cuenta. Por ejemplo, es posible que lo hayan contratado para realizar una prueba de penetración de una empresa que está siendo adquirida por la empresa que lo contrató, como parte del proceso previo a la fusión. Por ejemplo, la empresa adquirente puede solicitar a la empresa que está siendo adquirida que muestre si se han realizado pruebas de penetración en el último año o en los últimos seis meses. De lo contrario, es posible que la empresa que se está adquiriendo deba contratar a una empresa de pruebas de penetración para realizar una evaluación. Durante la fase de definición del alcance, el proceso de selección de objetivos debe completarse cuidadosamente con la empresa que lo contrató o, si forma parte de un equipo rojo a tiempo completo, con las partes interesadas correspondientes en su organización. La organización puede crear una lista de aplicaciones, sistemas o redes para probar. Esto a menudo se denomina "lista permitida" del alcance de las pruebas de penetración. Una lista de permitidos es una lista de aplicaciones, sistemas o redes que están dentro del alcance y deben probarse. Por otro lado, una lista de denegados es una lista de aplicaciones, sistemas o redes que no están dentro del alcance y no deben probarse. Siempre debe obedecer esas reglas.
+Identificación de actividad delictiva e informe inmediato de infracciones / actividades delictivas
+En algunos casos, es posible que un atacante real ya haya comprometido los sistemas y la red del cliente. En tales casos, debe identificar cualquier actividad delictiva e informarla de inmediato.
+->Limitar el uso de herramientas a un compromiso en particular:
+En algunos compromisos de pruebas de penetración, no se le permitirá utilizar un conjunto particular de herramientas que la organización no permita por razones legales o porque esas herramientas podrían interrumpir la red y los sistemas subyacentes.
+->Limitar la invasividad según el alcance:
+Después de que el evaluador de penetración y el cliente o la parte interesada correspondiente lleguen a un acuerdo sobre el alcance de la prueba, el evaluador de penetración podría realizar el descubrimiento de objetivos mediante un reconocimiento activo y pasivo. En el Módulo 3, “Recopilación de información e identificación de vulnerabilidades”, aprenderá cómo recopilar y reconocer información, cómo realizar y analizar análisis de vulnerabilidades y cómo aprovechar los resultados del reconocimiento para prepararse para la fase de explotación. Algunas herramientas y ataques pueden ser perjudiciales y extremadamente perjudiciales para los sistemas y la misión de su cliente. Siempre debe limitar la verbosidad e invasión de sus pruebas y herramientas en función del alcance acordado.
+->Confidencialidad de datos / información:
+Los resultados del compromiso de prueba de penetración (informe) y la información que pueda recopilar y a la que tenga acceso durante el compromiso de prueba de penetración deben protegerse y mantenerse confidenciales. Si esta información se pierde o se comparte, un adversario podría utilizarla para causar mucho daño a su cliente.
+->Riesgos para el profesional:
+Si no cumple con las mejores prácticas descritas en esta lista, podría estar sujeto a diferentes tarifas o multas y, en algunos casos, incluso a cargos penales. Por lo tanto, las empresas y los individuos que realizan pruebas de penetración profesionales a menudo tienen al menos un seguro de responsabilidad comercial general. Si se encuentra en el campo de la ciberseguridad (a menudo se ocupa de la administración de riesgos), necesita conocer los riesgos para su negocio y protegerse contra este riesgo.
+
+PISTA: Un buen programa de gestión de la ciberseguridad examina el entorno, las operaciones, la cultura y el panorama de amenazas de una organización y los compara con los marcos estándar del sector. Debe seguir las leyes locales y nacionales al determinar el alcance de un compromiso de prueba de penetración basado en el cumplimiento. Un buen programa de gestión de la ciberseguridad también alinea el cumplimiento con la tolerancia al riesgo de la organización e incorpora procesos comerciales. Además, tener una buena gestión y las herramientas adecuadas le permite medir el progreso en relación con los mandatos y lograr el cumplimiento de los estándares.
+
+
+
+
+
+->Reconocimiento activo: es un método de recopilación de información en el que las herramientas utilizadas envían sondeos a la red o los sistemas objetivo para obtener respuestas que luego se utilizan para determinar la postura de la red o el sistema. Estas sondas pueden utilizar varios protocolos y varios niveles de agresividad, generalmente en función de lo que se está escaneando y cuándo. Por ejemplo, puede estar escaneando un dispositivo, como una impresora, que no tiene una pila de TCP / IP o hardware de red muy sólidos. Al enviar sondeos activos, puede bloquear dicho dispositivo. La mayoría de los dispositivos modernos no tienen este problema; sin embargo, es posible, por lo que cuando realice un escaneo activo, debe tenerlo en cuenta y ajustar la configuración del escáner en consecuencia.
+
+->Reconocimiento pasivo: es un método de recopilación de información en el que las herramientas no interactúan directamente con el dispositivo o la red de destino. Existen varios métodos de reconocimiento pasivo. Algunos implican el uso de bases de datos de terceros para recopilar información. Otros también usan herramientas de tal manera que el objetivo no las detecta. Estas herramientas, en particular, funcionan simplemente escuchando el tráfico en la red y utilizando la inteligencia para deducir información sobre la comunicación del dispositivo en la red. Este enfoque es mucho menos invasivo en una red y es muy poco probable que este tipo de reconocimiento bloquee un sistema como una impresora. Debido a que no produce tráfico, es poco probable que se detecte y no genera ningún indicador en la red que está encuestando. Otro escenario en el que un escáner pasivo sería útil sería para un evaluador de penetración que necesita realizar un escaneo en una red de producción que no se puede interrumpir. La técnica de reconocimiento pasivo que utilice depende del tipo de información que desee obtener. Uno de los aspectos más importantes del aprendizaje sobre las pruebas de penetración es desarrollar una buena metodología que lo ayudará a seleccionar las herramientas y tecnologías adecuadas para usar durante el compromiso.
+
+->Las herramientas y los métodos de reconocimiento activo comunes incluyen lo siguiente:
+Enumeración de hosts
+Enumeración de redes
+Enumeración de usuarios
+Enumeración de grupos
+Enumeración de recursos compartidos de red
+Enumeración de páginas web
+Enumeración de aplicaciones
+Enumeración de servicios
+Elaboración de paquetes
+
+->Las herramientas y los métodos de reconocimiento pasivo comunes incluyen lo siguiente:
+Enumeración de dominios
+Inspección de paquetes
+Inteligencia de código abierto (OSINT)
+Recon-ng
+Intercepción pasiva
+
+
+
+
+
+:Las siguientes son herramientas adicionales que le permiten buscar volcados o descargas de datos vulnerados:
+
+WhatBreach: https://github.com/Ekultek/WhatBreach
+LeakLooker: https://github.com/woj-ciech/LeakLooker
+Buster: https://github.com/sham00n/buster
+Scavenger: https://github.com/rndinfosecguy/Scavenger
+PwnDB: https://github.com/davidtavarez/pwndb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
