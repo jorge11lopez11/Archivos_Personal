@@ -174,13 +174,507 @@ Intercepción pasiva
 
 
 
-:Las siguientes son herramientas adicionales que le permiten buscar volcados o descargas de datos vulnerados:
+Las siguientes son herramientas adicionales que le permiten buscar volcados o descargas de datos vulnerados:
 
 WhatBreach: https://github.com/Ekultek/WhatBreach
 LeakLooker: https://github.com/woj-ciech/LeakLooker
 Buster: https://github.com/sham00n/buster
 Scavenger: https://github.com/rndinfosecguy/Scavenger
 PwnDB: https://github.com/davidtavarez/pwndb
+
+
+
+
+Los siguientes son algunos operadores avanzados:
+
+Tipo de archivo: indica a Google que busque solo en el texto de un tipo de archivo en particular (por ejemplo, tipo de archivo:xls).
+Inurl: indica a Google que busque solo en la URL especificada de un documento (por ejemplo, inurl:search-text)
+Enlace: dirige a Google a buscar un término específico en los hipervínculos (por ejemplo, enlace:www.domain.com)
+Intitle: dirige a Google a buscar un término dentro del título de un documento (por ejemplo, intitle:“Index of/etc”)
+
+intext:JSESSIONID OR intext:PHPSESSID inurl:access.log ext:log
+"public $user =" | "public $password = " | "public $secret =" | "public $db =" ext:txt | ext:log -git
+xyz.com intext:JSESSIONID OR intext:PHPSESSID inurl:access.log ext:log
+
+
+
+
+OSINT: Recong-ng y Shodan:
+->Recon-ng:
+Este módulo cubre una serie de fuentes y herramientas individuales utilizadas para la recopilación de información. Estas herramientas son muy eficaces para sus usos específicos; sin embargo, ¿no sería fantástico si hubiera una herramienta que pudiera reunir todas estas funciones diferentes? Aquí es donde entra en juego Recon-ng. Es un marco desarrollado por Tim Tomes de Black Hills Information Security. Esta herramienta fue desarrollada en Python con Metasploit msfconsole en mente. Si ha usado la consola de Metasploit antes, Recon-ng debe ser familiar y fácil de entender.
+Recon-ng es un marco modular que facilita el desarrollo y la integración de nuevas funcionalidades. Es muy eficaz en la enumeración de sitios de redes sociales debido a su uso de interfaces de programación de aplicaciones (API) para recopilar información. También incluye una función de informes que le permite exportar datos en diferentes formatos de informe. Debido a que siempre deberá proporcionar algún tipo de entrega en cualquier prueba que realice, Recon-ng es especialmente valioso.
+->Shodan:
+Shodan es una organización que analiza Internet las 24 horas del día, los 365 días del año. Los resultados de esos escaneos se almacenan en una base de datos que se puede consultar en shodan.io o mediante una API. Puede utilizar Shodan para consultar hosts vulnerables, dispositivos de Internet de las cosas (IoT) y muchos otros sistemas que no deben estar expuestos o conectados a la Internet pública. En la figura 3-5, se muestran diferentes categorías de sistemas detectados por los escaneos de Shodan, incluidos los sistemas de control industrial (ICS), las bases de datos, los dispositivos de infraestructura de red y los videojuegos.
+
+
+
+
+
+
+
+Cómo funciona un típico escáner de vulnerabilidades automatizado
+Paso 1. En la fase de detección, el escáner utiliza una herramienta como Nmap para realizar la enumeración de hosts y puertos. Con los resultados de la enumeración de hosts y puertos, el escáner comienza a sondear los puertos abiertos para obtener más información.
+Paso 2. Cuando el escáner tiene suficiente información sobre el puerto abierto para determinar qué software y versión se están ejecutando en ese puerto, registra esa información en una base de datos para su posterior análisis. El escáner puede utilizar varios métodos para tomar esta determinación, incluido el uso de información de anuncios.
+Paso 3. El escáner intenta determinar si el software que escucha en el sistema de destino es susceptible a vulnerabilidades conocidas. Lo hace correlacionando una base de datos de vulnerabilidades conocidas con la información registrada en la base de datos sobre los servicios objetivo.
+Paso 4. El escáner produce un informe sobre lo que sospecha que podría ser vulnerable. Tenga en cuenta que estos resultados suelen ser falsos positivos y deben validarse. Como mínimo, este tipo de herramienta le da una idea de dónde buscar vulnerabilidades que puedan aprovecharse.
+
+
+
+
+Escaneos completos:
+Como se mencionó anteriormente, un escaneo completo generalmente implica la habilitación de cada opción de escaneo en la política de escaneo. Las opciones varían según el escáner, pero la mayoría de los escáneres de vulnerabilidades tienen sus categorías de opciones definidas de manera similar. Por ejemplo, suelen estar organizadas por sistema operativo, fabricante del dispositivo, tipo de dispositivo, protocolo, cumplimiento y tipo de ataque, y el resto de las opciones pueden incluirse en una categoría miscelánea. El ejemplo 3-44 muestra una lista de muestra de las categorías de complementos del escáner de vulnerabilidades de Nessus. Como puede ver en esta lista, hay muchos complementos disponibles para que los ejecute el escáner. También debería ser obvio, según los nombres de las categorías de complementos, que nunca habrá un solo dispositivo al que se apliquen todos estos complementos. Por ejemplo, los complementos para un dispositivo macOS no se aplicarían a un dispositivo Windows. Es por eso que normalmente necesita personalizar la selección de complementos para reflejar el entorno que está escaneando. Hacerlo reducirá el tráfico innecesario y acelerará el proceso de escaneo.
+Escaneos furtivos:
+A veces hay situaciones en las que debe escanear un entorno que está en un estado de producción. En tales situaciones, generalmente es necesario ejecutar un escaneo sin alertar a la posición defensiva del entorno; dicho escaneo se denomina escaneo furtivo. En este caso, querrá implementar un escáner de vulnerabilidades de manera que sea menos probable que el objetivo detecte la actividad. Los escáneres de vulnerabilidades son bastante ruidosos; sin embargo, hay algunas opciones que puede configurar para realizar un escaneo más silencioso. Por ejemplo, como se mencionó anteriormente en este módulo, existen diferentes tipos de escaneo de Nmap y que pueden detectarse mediante sistemas de prevención de intrusiones en la red (IPS) o cortafuegos de host. Ha aprendido que un escaneo SYN es un tipo de escaneo bastante furtivo. Este mismo concepto se aplica a los escáneres de vulnerabilidades porque todos usan algún tipo de escáner de puertos para enumerar el objetivo. Estas mismas opciones están disponibles en la configuración del escáner de vulnerabilidades. También puede deshabilitar cualquier complemento / ataque que sea especialmente probable que genere tráfico ruidoso, como los que realizan ataques de denegación de servicio, lo que definitivamente despertaría algunas inquietudes en la red objetivo.
+Escaneos de cumplimiento:
+Los escaneos de cumplimiento son pruebas de red y aplicaciones (escaneos) generalmente impulsados por el mercado o la gestión a los que sirve el entorno y el cumplimiento normativo. Un ejemplo de esto sería el entorno de seguridad de la información para una entidad de servicios de salud, que debe cumplir con los requisitos enviados por la Ley de Portabilidad y Responsabilidad de los Seguros de Salud (HIPAA). Aquí es donde entra en juego un escáner de vulnerabilidades. Es posible utilizar un escáner de vulnerabilidades para abordar los requisitos específicos que requiere una política. Los escáneres de vulnerabilidades suelen tener la capacidad de importar un archivo de política de cumplimiento. Este archivo de política generalmente puede asignarse a complementos / ataques específicos que el escáner puede realizar. Una vez que se importa la política, el conjunto específico de verificaciones de cumplimiento se puede ejecutar en un sistema de destino.
+El desafío con los requisitos de cumplimiento es que hay muchos tipos diferentes para diferentes industrias y agencias gubernamentales, y todos pueden interpretarse de varias maneras. Algunas de las comprobaciones pueden ser sencillas. Si una verificación de requisitos busca que se ejecute un comando específico y que la salida sea un 1 en lugar de un 0, es muy simple para que lo determine un escáner de vulnerabilidades; sin embargo, muchos requisitos dejan más para ser interpretados. Esto hace que sea muy difícil para una herramienta como un escáner de vulnerabilidades tomar una determinación. La mayoría de los escáneres de vulnerabilidades también tienen la capacidad de crear políticas de cumplimiento personalizadas. Esta es una opción valiosa para los evaluadores de penetración, que generalmente desean ajustar la política del escáner para cada interacción.
+
+Categoría	Descripción
+A. Escaneo furtivo:	El escaneo requiere ejecutar procesos de escaneo sin alertar a la posición defensiva del entorno.
+B. Escaneos de cumplimiento:	El escaneo generalmente prueba redes y aplicaciones impulsadas por los requisitos del mercado, la gestión o las regulaciones que sirven al entorno.
+C. Escaneos de descubrimiento:	El escaneo está destinado principalmente a identificar la superficie de ataque de un objetivo. Realizar un escaneo de puertos es una parte importante de este tipo de escaneo.
+D. Escaneos autenticados:	El escaneo requiere que se proporcione al analizador un conjunto de credenciales con acceso de nivel raíz al sistema.
+E. Escaneo completo:	El escaneo generalmente implica la habilitación de cada opción de escaneo en la política de escaneo.
+F. Escaneos no autenticados:	El escaneo muestra solo los servicios de red que están expuestos a la red. El escáner intenta enumerar los puertos abiertos en el host de destino.
+
+
+
+
+
+
+Desafíos a tener en cuenta al ejecutar un análisis de vulnerabilidades:
+
+->Consideración del mejor momento para realizar un escaneo:
+El momento en el que se debe ejecutar un escaneo suele ser lo más preocupante cuando se analiza una red de producción. Si está escaneando un dispositivo en un entorno de laboratorio, normalmente no hay mucha preocupación porque el entorno de laboratorio no está siendo utilizado por aplicaciones críticas. Hay algunas razones por las que la ejecución de un escaneo en una red de producción debe realizarse con cuidado. En primer lugar, el tráfico de red generado por un escaneo de vulnerabilidades puede causar y causará mucho ruido en la red. También puede causar una congestión significativa, especialmente cuando los escaneos atraviesan varios saltos de red. (Hablaremos de esto en breve).
+Otra consideración al elegir un momento para ejecutar un escaneo es el hecho de que muchas de las opciones o complementos que se realizan en un escaneo de vulnerabilidades pueden bloquear el dispositivo objetivo y la infraestructura de la red. Por este motivo, debe asegurarse de que, al escanear en una red de producción, lo haga en los momentos que tendrán el menor impacto posible en los usuarios finales y los servidores. La mayoría de las veces, es mejor escanear en las primeras horas del día, cuando nadie está usando la red para fines críticos.
+->Determinar qué protocolos están en uso:
+Una de las primeras cosas que debe saber sobre una red o un dispositivo de destino antes de comenzar a ejecutar escaneo de vulnerabilidades es qué protocolos se utilizan. Si un dispositivo de destino utiliza protocolos TCP y UDP para los servicios en ejecución, y solo ejecuta un escaneo de vulnerabilidades en los puertos TCP, se perderán las vulnerabilidades que puedan encontrarse en los servicios UDP.
+->Topología de la red:
+Como se mencionó anteriormente, la topología de la red siempre debe considerarse cuando se trata del escaneo de vulnerabilidades. Por supuesto, nunca se recomienda escanear a través de una conexión WAN porque afectaría significativamente a cualquiera de los dispositivos a lo largo de la ruta. La regla general al determinar en qué parte de la topología de la red se debe ejecutar un escaneo de vulnerabilidades es que siempre se debe realizar lo más cerca posible del objetivo. Por ejemplo, si está escaneando un servidor de Windows que se encuentra dentro de su subred filtrada (anteriormente conocida como zona desmilitarizada o DMZ), la mejor ubicación para el escáner de vulnerabilidades es junto al servidor en la subred filtrada. Al colocarlo allí, puede eliminar cualquier preocupación sobre el impacto de los dispositivos que atraviesa el tráfico de su escáner.
+Además del impacto en la infraestructura de la red, otra preocupación es que cualquier dispositivo que atraviese también podría afectar los resultados del escáner. Esto es más preocupante al atravesar un dispositivo de cortafuegos; Además, otros dispositivos de la infraestructura de red también podrían afectar los resultados.
+->Limitaciones del ancho de banda:
+Tomemos un momento para considerar los efectos de las limitaciones de ancho de banda en el escaneo de vulnerabilidades. Obviamente, cada vez que inunde una red con una gran cantidad de tráfico, se producirá un problema con la cantidad de ancho de banda disponible. Como profesional de pruebas de penetración, debe conocer cómo afecta el ancho de banda de las redes o los sistemas que está escaneando. Específicamente, según la cantidad de ancho de banda que tenga entre el escáner y el objetivo, es posible que deba ajustar la configuración del escáner para adaptarse a situaciones de menor ancho de banda. Si está escaneando un enlace de VPN o WAN que probablemente tenga un ancho de banda limitado, querrá ajustar sus opciones de escaneo para no causar problemas de consumo de ancho de banda. Las configuraciones que deben ajustarse suelen ser las relacionadas con los ataques de tipo desbordamiento y denegación de servicio (DoS).
+->Limitación de consultas:
+Para solucionar el problema de las limitaciones de ancho de banda y el escaneo de vulnerabilidades, a menudo puede ser útil ralentizar el tráfico creado por el escáner. Esto a menudo se denomina limitación de consultas y, por lo general, se puede lograr modificando las opciones de la política de escaneo. Una forma de hacerlo es reducir la cantidad de subprocesos de ataque que se envían al objetivo al mismo tiempo. No hay una regla general específica para la cantidad de subprocesos. Realmente depende de la solidez del objetivo. Algunos objetivos son más frágiles que otros. Otra forma de lograr esto es reducir el alcance de los complementos/ataques que el escáner está buscando. Si sabe que el dispositivo de destino es un servidor Linux, puede deshabilitar los ataques para otros sistemas operativos, como Windows. Aunque los ataques no funcionarán contra el servidor Linux, aún necesita recibir y responder al tráfico. Este tráfico adicional puede causar un cuello de botella en el procesamiento y el consumo de tráfico de red. Limitar la cantidad de solicitudes a las que el objetivo debería responder reduciría el riesgo de causar problemas, como bloquearse en el objetivo, y dar como resultado un escaneo más exitoso.
+->Sistemas frágiles/activos no tradicionales:
+Al utilizar un escáner de vulnerabilidades en su red interna, debe tener en cuenta los dispositivos de la red que podrían no resistir el tráfico que les arroja un escáner de vulnerabilidades. Para estos sistemas, es posible que deba ajustar las opciones de escaneo para reducir el riesgo de bloqueo de los dispositivos o eximir por completo los dispositivos específicos del escaneo. Desafortunadamente, al eximir los dispositivos específicos, se reduce la seguridad general del entorno.
+Las impresoras a menudo se consideran "sistemas frágiles". Históricamente, han sido dispositivos que no han podido resistir los intentos de escaneo de vulnerabilidades. Con el aumento de los dispositivos de IoT, hoy en día hay muchos más dispositivos que pueden considerarse frágiles y debe tenerlos en cuenta al planificar el escaneo de vulnerabilidades. La forma típica de abordar los dispositivos frágiles es eximirlos de un escaneo; sin embargo, estos dispositivos pueden suponer un riesgo para el entorno y deben analizarse. Para solucionar este problema, puede "limitar" la frecuencia de escaneo y las opciones utilizadas en la política de escaneo para reducir la probabilidad de que el dispositivo falle.
+
+
+
+
+
+Fuentes para una mayor investigación de vulnerabilidades:
+
+->US-CERT:
+El Equipo de preparación para emergencias informáticas de EE. UU. (US-CERT) se estableció para proteger la infraestructura de Internet de los Estados Unidos. El objetivo principal de US-CERT es trabajar con agencias del sector público y privado para aumentar la eficiencia del intercambio de datos sobre vulnerabilidades. El trabajo realizado por US-CERT tiene como objetivo mejorar la postura de ciberseguridad de la nación. US-CERT opera como una entidad dependiente del Departamento de Seguridad Nacional como parte del Centro Nacional de Integración de Comunicaciones y Ciberseguridad (NCCIC). Puede acceder a los recursos de US-CERT visitando https://www.us-cert.gov.
+->División del CERT de la Universidad Carnegie Mellon
+La División CERT del Instituto de Ingeniería de Software de la Universidad Carnegie Mellon es un centro de ciberseguridad cuyos expertos ayudan a coordinar las divulgaciones de vulnerabilidades en toda la industria. CERT investiga las vulnerabilidades de seguridad y contribuye a muchos esfuerzos diferentes de ciberseguridad en la industria. El CERT también desarrolla y ofrece capacitación a muchas organizaciones para ayudarlas a mejorar sus prácticas y programas de ciberseguridad. Puede obtener información adicional sobre el CERT en https://cert.org.
+
+->NIST
+El Instituto Nacional de Normas y Tecnología (NIST) es una agencia del Departamento de Comercio de EE. UU. Su enfoque principal es promover la innovación y la competitividad industrial. NIST es responsable de la creación del marco de ciberseguridad de NIST (NIST CSF; consulte https://www.nist.gov/cyberframework). Este marco incluye una política de orientación sobre seguridad informática. La versión 1 del marco de NIST se publicó en 2014 con el fin de orientar la seguridad de la infraestructura crítica; sin embargo, la industria privada lo utiliza comúnmente como orientación en la gestión de riesgos. En 2018, NIST lanzó la versión 1.1, que está diseñada para ayudar a las organizaciones a evaluar los riesgos que enfrentan. En general, el marco describe los estándares y las mejores prácticas de la industria que pueden utilizarse para mejorar la postura de ciberseguridad de las organizaciones. Cualquiera que sea responsable de tomar decisiones relacionadas con la ciberseguridad en una organización debe consultar este marco para obtener orientación sobre los estándares y las mejores prácticas.
+
+->JPCERT
+De manera similar al US-CERT, el Equipo de respuesta ante emergencias informáticas de Japón (JPCERT) es una organización que trabaja con proveedores de servicios, de seguridad y agencias gubernamentales y del sector privado para brindar capacidades de respuesta a incidentes, aumentar la conciencia sobre la ciberseguridad, incidentes de seguridad y trabajar con otros equipos internacionales de CERT. El JPCERT es responsable de las actividades del Equipo de respuesta a incidentes de seguridad informática (CSIRT) en la región de Japón y Asia Pacífico. Puede acceder a los recursos de JP-CERT visitando https://www.jpcert.or.jp/english/.
+
+->CAPEC
+La enumeración y clasificación de patrones de ataque común (CAPEC) es un esfuerzo impulsado por la comunidad para catalogar los patrones de ataque vistos en la naturaleza para que puedan usarse para identificar amenazas activas de manera más eficiente. CAPEC, mantenido por MITRE, actúa como un diccionario de ataques conocidos que se han visto en el mundo real.
+
+->CVE:
+Vulnerabilidades y exposiciones comunes (CVE) es un esfuerzo que llega a las comunidades internacionales de ciberseguridad. Fue creado en 1999 con la idea de consolidar herramientas y bases de datos de ciberseguridad. Una ID de CVE se compone de las letras CVE seguidas por el año de publicación y cuatro o más dígitos en la parte del número de secuencia de la ID (por ejemplo, CVE-AAAA-NNNN con cuatro dígitos en el número de secuencia, CVE-AAAA-NNNNN con cinco dígitos en el número de secuencia, CVE-YYYY-NNNNNNN con siete dígitos en el número de secuencia, etc.). Puede obtener información adicional sobre CVE en https://cve.mitre.org.
+->CWE:
+La enumeración de debilidades comunes (CWE), en un nivel alto, es una lista de debilidades de software. El propósito de CWE es crear un lenguaje común para describir las debilidades de seguridad del software que son la causa raíz de determinadas vulnerabilidades. CWE proporciona una línea de base común para la identificación de debilidades para ayudar en el proceso de mitigación. Puede obtener información adicional sobre CWE en el sitio de MITRE: https://cwe.mitre.org.
+->CVSS:
+Cada vulnerabilidad representa un riesgo potencial que los agentes de amenazas pueden utilizar para comprometer sus sistemas y su red. Cada vulnerabilidad conlleva una cantidad asociada de riesgo. Uno de los estándares más adoptados para calcular la gravedad de una vulnerabilidad determinada es el Sistema común de puntuación de vulnerabilidades (CVSS), que tiene tres componentes: puntuaciones básicas, temporales y ambientales. Cada componente se presenta como una puntuación en una escala de 0 a 10.
+CVSS es un estándar de la industria mantenido por el Foro de Equipos de Seguridad y Respuesta a Incidentes (FIRST) que es utilizado por muchos Equipos de Respuesta a Incidentes de Seguridad de Productos (PSIRT) para transmitir información sobre la gravedad de las vulnerabilidades que divulgan a sus clientes. En CVSS, una vulnerabilidad se evalúa según tres aspectos, con una puntuación asignada a cada uno de ellos:
+El grupo base representa las características intrínsecas de una vulnerabilidad que son constantes en el tiempo y no dependen de un entorno específico del usuario. Esta es la información más importante y el único aspecto obligatorio para obtener una puntuación de vulnerabilidad. El grupo temporal evalúa la vulnerabilidad a medida que cambia con el tiempo.
+El grupo de entornos representa las características de una vulnerabilidad, teniendo en cuenta el entorno de la organización.
+La puntuación para el grupo base está entre 0 y 10, donde 0 es la menos grave y 10 se asigna a las vulnerabilidades muy críticas. Por ejemplo, una vulnerabilidad muy crítica podría permitir que un atacante comprometa de forma remota un sistema y obtenga el control total. Además, la puntuación se presenta en forma de una cadena de vectores que identifica cada uno de los componentes utilizados para componer la puntuación. La fórmula utilizada para obtener la puntuación tiene en cuenta varias características de la vulnerabilidad y cómo el atacante puede aprovechar estas características.
+CVSS define varias características para los grupos base, temporal y ambiental. El grupo base define métricas de explotabilidad que miden cómo se puede aprovechar la vulnerabilidad, así como métricas de impacto que miden el impacto en la confidencialidad, la integridad y la disponibilidad. Además de estas dos métricas, se usa una métrica llamada Cambio de alcance (S) para transmitir el impacto en otros sistemas que pueden verse afectados por la vulnerabilidad, pero que no contienen el código vulnerable. Por ejemplo, si un enrutador es susceptible a una vulnerabilidad de DoS y experimenta un bloqueo después de recibir un paquete diseñado por el atacante, se cambia el alcance, ya que los dispositivos detrás del enrutador también experimentarán la condición de denegación de servicio. FIRST proporciona ejemplos adicionales en https://www.first.org/cvss/.
+
+
+
+
+
+Cómo lidiar con una vulnerabilidad:
+¿Cuál es la gravedad de la vulnerabilidad?
+¿A cuántos sistemas se aplica la vulnerabilidad?
+¿Cómo se detectó la vulnerabilidad?
+¿La vulnerabilidad se encontró con un escáner automatizado o manualmente?
+¿Cuál es el valor del dispositivo en el que se encontró la vulnerabilidad?
+¿Este dispositivo es fundamental para su empresa o infraestructura?
+¿Cuál es el vector de ataque y se aplica a su entorno?
+¿Existe una posible solución alternativa o mitigación?
+
+
+
+
+
+->Suplantación de identidad de correo electrónico (Phishing):
+Con la suplantación de identidad (phishing), un atacante presenta a un usuario un enlace o un archivo adjunto que parece un recurso válido y confiable. Cuando el usuario hace clic en él, se le solicita que revele información confidencial, como su nombre de usuario y contraseña. El ejemplo 4-1 muestra un ejemplo de correo electrónico de suplantación de identidad (phishing).
+->Whaling:
+Whaling o caza de ballenas, que es similar a la suplantación de identidad (phishing) y la suplantación de identidad dirigido (spear phishing), es un ataque dirigido a ejecutivos de negocios de alto perfil y personas clave en una empresa. Al igual que los agentes de amenazas que realizan ataques de suplantación de identidad (spear phishing), los agentes de amenazas que realizan ataques de caza de ballenas también crean correos electrónicos y páginas web para enviar malware o recopilar información confidencial; sin embargo, los correos electrónicos y las páginas de los atacantes de la caza de ballenas tienen un aspecto más oficial o serio. Los correos electrónicos sobre la caza de ballenas están diseñados para parecerse a los correos electrónicos comerciales críticos o los correos electrónicos de alguien que tiene autoridad legítima, ya sea dentro o fuera de la empresa. En los ataques de caza de ballenas, las páginas web están diseñadas para abordar específicamente a las víctimas de alto perfil. En un ataque de suplantación de identidad (phishing) regular, el correo electrónico puede ser una advertencia falsa de un banco o proveedor de servicios. En un ataque de caza de ballenas, el correo electrónico o la página web se crearían con un formulario de nivel ejecutivo más serio. El contenido se crea para dirigirse a un gerente superior, como el CEO o una persona que pueda tener credenciales para cuentas valiosas dentro de la organización.
+El objetivo principal en los ataques de caza de ballenas es robar información confidencial o comprometer el sistema de la víctima y luego apuntar a otras víctimas clave de alto perfil.
+->Suplantación de identidad de llamadas telefónicas (Vishing):
+Vishing (abreviatura de Suplantación de identidad de llamadas telefónicas o voz), es un ataque de ingeniería social que se lleva a cabo en una conversación telefónica. El atacante persuade al usuario para que revele información personal y financiera privada o información sobre otra persona o empresa.
+El objetivo de la vishing suele ser robar números de tarjetas de crédito, números de seguro social y otra información que pueda utilizarse en planes de robo de identidad. Los atacantes pueden suplantar y falsificar el identificador de llamadas para ocultarse cuando realizan ataques de vishing.
+->Suplantación de identidad del servicio de mensajes cortos (Smishing):
+Dado que la suplantación de identidad (phishing) ha sido una táctica eficaz para los agentes de amenazas, han encontrado otras formas además del correo electrónico para engañar a sus víctimas para que sigan enlaces maliciosos o activen malware desde correos electrónicos. Las campañas de suplantación de identidad a menudo utilizan mensajes de texto para enviar malware o enlaces maliciosos a dispositivos móviles.
+Un ejemplo de suplantación de identidad del servicio de mensajes cortos (SMS) o Smishing como se conoce en Inglés, son las estafas de SMS relacionadas con bitcoins que han surgido en los últimos años. Numerosas víctimas han recibido mensajes que les indican que hagan clic en los enlaces para confirmar sus cuentas y reclamar bitcoins. Cuando un usuario hace clic en dicho enlace, puede ser engañado para que ingrese información confidencial en el sitio del atacante.
+Puede ayudar a mitigar los ataques de suplantación de identidad (phishing) por SMS al no hacer clic en enlaces de remitentes de mensajes desconocidos. A veces, los atacantes falsifican la identidad de entidades legítimas (como su banco, su proveedor de Internet, plataformas de medios sociales, Amazon o eBay). No debe hacer clic en ningún enlace enviado por mensajes de texto si no espera que se le envíe dicho mensaje. Por ejemplo, si recibe un mensaje aleatorio sobre un problema con un pedido de Amazon, no haga clic en ese enlace. En cambio, vaya directamente al sitio web de Amazon, inicie sesión y verifique en el sitio web de Amazon si hay un problema. De manera similar, si recibe un mensaje que indica que hay un problema con una transacción de tarjeta de crédito o una factura, llame al banco directamente en lugar de hacer clic en un enlace. Si recibe un mensaje que le indica que ha ganado algo, probablemente sea un intento de suplantación de identidad por SMS y no debe hacer clic en el enlace.
+->Abandono de USB:
+Muchos evaluadores de penetración y atacantes han utilizado ataques de caída de dispositivos USB o también conocido como abandono de USB, para comprometer con éxito los sistemas de las víctimas. Este tipo de ataque implica dejar las memorias USB (a veces denominadas llaves USB o unidades USB) desatendidas o colocarlas en ubicaciones estratégicas. A menudo, los usuarios piensan que los dispositivos se han perdido y los insertan en sus sistemas para averiguar a quién devolverlos; antes de darse cuenta, están descargando e instalando malware. Conectar esa memoria USB que encontró en la calle fuera de su oficina podría provocar una violación de la seguridad.
+La investigación de Elie Bursztein, del equipo de investigación contra el abuso de Google, muestra que la mayoría de los usuarios conectarán unidades USB a su sistema sin dudarlo. Como parte de su investigación, colocó cerca de 300 memorias USB en el campus Urbana-Champaign de la Universidad de Illinois y midió quién enchufó las unidades. Los resultados mostraron que se captaron el 98% de las unidades USB y, en el 45% de las unidades, alguien no solo conectó la unidad, sino que hizo clic en los archivos.
+Otra técnica de ingeniería social implica dejar caer un llavero que contiene una memoria USB que también puede incluir imágenes de niños o mascotas y una o dos memorias reales. Este tipo de toques personales pueden hacer que la víctima intente identificar al propietario para devolver el llavero. Este tipo de ataque de ingeniería social es muy eficaz y también puede ser catastrófico.
+->Ataques al bebedero:
+Un ataque de bebedero es un ataque dirigido que se produce cuando un atacante perfila sitios web a los que accede la víctima prevista. Luego, el atacante escanea esos sitios web en busca de posibles vulnerabilidades. Si el atacante localiza un sitio web que puede verse comprometido, el sitio web se inyecta con JavaScript u otro código similar diseñado para redirigir al usuario cuando regresa a ese sitio. (Esta redirección también se conoce como ataque pivote). Luego, el usuario es redirigido a un sitio con algún tipo de código de explotación. El propósito es infectar las computadoras en la red de la organización, lo que permite que el atacante se establezca en la red para espionaje u otras razones.
+Los ataques de bebedero a menudo están diseñados para perfiles de usuarios de organizaciones específicas. Por lo tanto, las organizaciones deberían desarrollar políticas para prevenir estos ataques. Una política de este tipo podría requerir, por ejemplo, la actualización periódica de las aplicaciones antimalware y el uso de navegadores virtuales seguros que tengan poca conectividad con el resto del sistema y la red. Para evitar que un sitio web se vea comprometido como parte de un ataque de este tipo, el administrador debe utilizar métodos de programación adecuados y escanear el sitio web de la organización en busca de malware con regularidad. La educación del usuario es fundamental para ayudar a prevenir este tipo de ataques.
+
+
+
+
+
+
+
+Intrusión por seguimiento:
+Con piggybacking o acceso no autorizado por acompañamiento, una persona no autorizada acompaña a una persona autorizada para ingresar a un área restringida, generalmente con el consentimiento de la persona. Tailgating o intrusión por seguimiento es esencialmente lo mismo, pero con una diferencia: generalmente ocurre sin el consentimiento de la persona autorizada. Tanto el piggybacking and tailgating se pueden evitar mediante el uso de vestíbulos de control de acceso (anteriormente conocidos como mantraps o trampas de hombres). Un vestíbulo de control de acceso es un espacio pequeño que generalmente puede acomodar a una sola persona. Tiene dos juegos de puertas poco espaciadas; el primer set debe cerrarse antes de que se abra el otro, creando una especie de sala de espera donde las personas se identifican (y no pueden escapar). Los vestíbulos de control de acceso se utilizan a menudo en salas de servidores y centros de datos. La autenticación multifactor se usa a menudo junto con un vestíbulo de control de acceso; por ejemplo, es posible que se requiera una tarjeta de proximidad y un PIN en la primera puerta y un escaneo biométrico en la segunda.
+
+Búsqueda en la basura:
+Con Dumpster diving o búsqueda en la basura, una persona busca información privada en contenedores de basura y reciclaje. Para proteger los documentos confidenciales, una organización debe almacenarlos en un lugar seguro el mayor tiempo posible. Cuando ya no necesite los documentos, la organización debe triturarlos. (Algunas organizaciones incineran sus documentos o hacen que un tercero profesional certificado los destruya). Los buzos de contenedores de basura pueden encontrar información en papel y en discos duros o medios extraíbles.
+
+Vigilancia por encima del hombro
+Con shoulder surfing o vigilancia por encima del hombro, alguien obtiene información como información de identificación personal (PII), contraseñas y otros datos confidenciales al mirar por encima del hombro de la víctima. Una forma de hacerlo es acercarse a una persona y mirar por encima del hombro para ver lo que escribe en una computadora portátil, teléfono o tableta. También es posible llevar a cabo este tipo de ataque desde lejos mediante el uso de binoculares o incluso un telescopio. Estos ataques tienden a ser especialmente exitosos en lugares concurridos. Además, se puede espiar sobre el hombro con pequeñas cámaras y micrófonos ocultos. La concientización y la capacitación de los usuarios son clave para la prevención. También hay filtros de pantalla especiales para las pantallas de las computadoras a fin de evitar que alguien vea la pantalla en ángulo.
+
+Clonación de credenciales
+Los atacantes pueden realizar diferentes ataques de clonación de credenciales. Por ejemplo, un atacante puede clonar una tarjeta de identificación utilizada para acceder a un edificio. Se pueden utilizar software y hardware especializados para realizar estos ataques de clonación. Los atacantes también pueden utilizar técnicas de ingeniería social para hacerse pasar por empleados o cualquier otro usuario autorizado para ingresar a un edificio simplemente creando su propia tarjeta de identificación e intentando engañar a otros usuarios para que los dejen ingresar al edificio. Esto incluso podría realizarse sin una clonación completa de las capacidades de radiofrecuencia (RF) de una tarjeta de identificación.
+
+
+
+
+
+Herramientas de ingeniería social:
+
+->Kit de herramientas para ingenieros sociales (SET):
+El Kit de herramientas de ingeniero social (SET) es una herramienta desarrollada por David Kennedy. Esta herramienta se puede utilizar para lanzar numerosos ataques de ingeniería social y se puede integrar con herramientas y marcos de terceros, como Metasploit. SET está instalado por defecto en Kali Linux y Parrot Security. Sin embargo, puede instalarlo en otras versiones de Linux, así como en macOS. Puede descargar SET de https://github.com/trustedsec/social-engineer-toolkit.
+
+->Marco de explotación del navegador (BeEF):
+En el Módulo 6, “Aprovechamiento de las vulnerabilidades basadas en aplicaciones”, aprenderá sobre las vulnerabilidades de las aplicaciones web, como las secuencias de comandos entre sitios (XSS) y la falsificación de solicitudes entre sitios (CSRF). Las vulnerabilidades de XSS aprovechan las debilidades de validación de entrada en una aplicación web. Estas vulnerabilidades se utilizan a menudo para redirigir a los usuarios a sitios web maliciosos para robar cookies (tokens de sesión) y otra información confidencial. Marco de explotación del navegador (BeEF) es una herramienta que puede utilizarse para manipular a los usuarios aprovechando las vulnerabilidades de XSS. Puede descargar BeEF de https://beefproject.com o https://github.com/beefproject/beef.
+Seleccione cada pestaña para ver un ejemplo del uso de la herramienta BeEF.
+
+
+
+Herramientas de suplantación de identidad de llamadas:
+Puede cambiar muy fácilmente la información del identificador de llamadas que se muestra en un teléfono. Existen varias herramientas de falsificación de llamadas que se pueden utilizar en ataques de ingeniería social.
+Los siguientes son algunos ejemplos de herramientas de falsificación de llamadas:
+SpoofApp: es una aplicación de Apple para iOS y Android que se puede usar para falsificar fácilmente un número de teléfono.
+SpoofCard: es una aplicación de Apple para iOS y Android que puede falsificar un número y cambiar su voz, grabar llamadas, generar diferentes ruidos de fondo y enviar llamadas directamente al correo de voz.
+Asterisk: Asterisk es una herramienta legítima de administración de voz sobre IP (VoIP) que también se puede utilizar para suplantar el identificador de llamadas.
+
+
+
+
+Técnicas / métodos de influencia de la ingeniería social para obtener más información
+->Autoridad:
+Un ingeniero social muestra confianza y quizás autoridad, ya sea legal, organizativa o social.
+->Escasez y urgencia:
+Es posible utilizar la escasez para crear una sensación de urgencia en un contexto de toma de decisiones. Se puede usar un lenguaje específico para aumentar la urgencia y manipular a la víctima. Los vendedores a menudo usan la escasez para manipular a los clientes (por ejemplo, para decirle a un cliente que una oferta es solo para hoy o que hay suministros limitados). Los ingenieros sociales utilizan técnicas similares.
+->Prueba social:
+La prueba social es un fenómeno psicológico en el que un individuo no puede determinar el modo adecuado de comportamiento. Por ejemplo, puede ver a otros actuar o hacer algo de cierta manera y puede suponer que es apropiado. Los ingenieros sociales pueden aprovechar la prueba social cuando un individuo ingresa en una situación desconocida con la que no sabe cómo lidiar. Los ingenieros sociales pueden manipular a varias personas a la vez mediante esta técnica.
+->Semejanza:
+Las personas pueden verse influenciadas por cosas o personas que les gustan. Los ingenieros sociales se esfuerzan por que a los demás les guste su forma de comportarse, verse y hablar. A la mayoría de las personas les gusta lo que es estético. A las personas también les gusta ser apreciadas y hablar de sí mismas. Los ingenieros sociales se aprovechan de estas vulnerabilidades humanas para manipular a sus víctimas.
+->Miedo:
+Es posible manipular a una persona con miedo para incitarla a actuar con prontitud. El miedo es una emoción desagradable basada en la creencia de que algo malo o peligroso puede ocurrir. Utilizando el miedo, los ingenieros sociales obligan a sus víctimas a actuar rápidamente para evitar o corregir una situación peligrosa o dolorosa.
+
+
+
+
+
+
+
+Resolución de nombres de Windows y ataques de SMB:
+La resolución de nombres es uno de los aspectos más fundamentales de las redes, los sistemas operativos y las aplicaciones. Existen varias tecnologías y protocolos de resolución de nombre a dirección IP, incluido el sistema de entrada / salida básico de red (NetBIOS), la resolución de nombres de multidifusión local de enlace (LLMNR) y el sistema de nombres de dominio (DNS). Las secciones que siguen cubren las vulnerabilidades y explotaciones relacionados con estos protocolos.
+
+
+Servicio de nombres NetBIOS y LLMNR:
+NetBIOS y LLMNR son protocolos utilizados principalmente por Microsoft Windows para la identificación de hosts. LLMNR, que se basa en el formato del protocolo DNS, permite que los hosts en el mismo enlace local realicen la resolución de nombres para otros hosts. Por ejemplo, un host de Windows que intenta comunicarse con una impresora o con una carpeta compartida de la red puede usar NetBIOS
+
+NetBIOS ofrece tres servicios diferentes:
+Servicio de nombres NetBIOS (NetBIOS-NS) para el registro y la resolución de nombres
+Servicio de datagramas (NetBIOS-DGM) para comunicación sin conexión
+Servicio de sesión (NetBIOS-SSN) para la comunicación orientada a la conexión
+Las operaciones relacionadas con NetBIOS utilizan los siguientes puertos y protocolos:
+  Puerto TCP 135: Asignador de terminales de Llamada a procedimiento remoto de Microsoft (MS-RPC), utilizado para la comunicación de cliente a cliente y de servidor a cliente
+  Puerto UDP 137: servicio de nombres NetBIOS
+  Puerto UDP 138: servicio de datagrama NetBIOS
+  Puerto TCP 139: Servicio de sesión NetBIOS
+  Puerto TCP 445: protocolo SMB, utilizado para compartir archivos entre diferentes sistemas operativos, incluidos los sistemas basados en Windows y Unix
+NOTA Tradicionalmente, un nombre NetBIOS era un nombre de 16 caracteres asignado a una computadora en un grupo de trabajo por WINS para la resolución de nombres de una dirección IP a un nombre NetBIOS. Microsoft ahora usa DNS para la resolución de nombres.
+
+En Windows, un grupo de trabajo es una red de área local (LAN) de igual a igual que puede admitir un máximo de 10 hosts en la misma subred. Un grupo de trabajo no tiene una administración centralizada. Básicamente, cada usuario controla los recursos y la seguridad localmente en su sistema. Una implementación basada en dominios, por otro lado, es una red de cliente a servidor que puede admitir miles de hosts que están geográficamente dispersos en muchas subredes. Un usuario con una cuenta en el dominio puede iniciar sesión en cualquier sistema informático sin tener una cuenta en ese equipo. Lo hace mediante la autenticación en un controlador de dominio.
+Históricamente, ha habido docenas de vulnerabilidades en NetBIOS, SMB y LLMNR. Veamos un ejemplo sencillo. El nombre del grupo de trabajo predeterminado en Windows es WORKGROUP. Muchos usuarios dejan su grupo de trabajo configurado con este nombre predeterminado y configuran el uso compartido de archivos o impresoras con credenciales débiles. Es muy fácil para un atacante enumerar las máquinas y potencialmente comprometer el sistema forzando contraseñas o aprovechando otras técnicas.
+Una vulnerabilidad común en LLMNR implica que un atacante falsifique una fuente autorizada para la resolución de nombres en un sistema víctima respondiendo al tráfico LLMNR a través del puerto UDP 5355 y al tráfico NBT-NS a través del puerto UDP 137. El atacante básicamente envenena el servicio LLMNR para manipular el sistema de la víctima. Si el host solicitado pertenece a un recurso que requiere identificación o autenticación, el nombre de usuario y el hash de NTLMv2 se envían al atacante. El atacante puede recopilar el hash enviado a través de la red mediante el uso de herramientas como rastreadores. Posteriormente, el atacante puede usar la fuerza bruta o descifrar los hashes sin conexión para obtener las contraseñas de texto sin formato.
+Se pueden utilizar varias herramientas para realizar este tipo de ataque, como NBNSpoof, Metasploit y Responder. Metasploit, por supuesto, es una de las herramientas y marcos más populares utilizados por los evaluadores de penetración y los atacantes. Otra herramienta de código abierto que es muy popular e incluso ha sido utilizada por malware es Pupy, que está disponible en GitHub. Pupy es una herramienta de administración remota multiplataforma y posterior a la explotación basada en Python que funciona en Windows, Linux, macOS e incluso en Android.
+
+CONSEJO: Una de las mitigaciones comunes para estos tipos de ataques es deshabilitar LLMNR y NetBIOS en la configuración de seguridad del equipo local o configurar una política de grupo. Además, puede configurar políticas (reglas) de controles de acceso adicionales basadas en la red o el host para bloquear el tráfico LLMNR / NetBIOS si no se necesitan estos protocolos. Una de las técnicas de detección comunes para los ataques de envenenamiento de LLMNR es monitorear la clave de registro HKLMSoftwarePolicies
+MicrosoftWindows NTDNSClient para detectar cambios en el valor DWORD de EnableMulticast. Si ve un cero (0) para el valor de esa clave, sabe que LLMNR está deshabilitado.
+
+Explotaciones para SMB:
+Como aprendió en la sección anterior, históricamente SMB ha sufrido numerosas vulnerabilidades catastróficas. Puede ver esto fácilmente explorando las docenas de explotaciones conocidos en la base de datos de explotaciones (explotación-db.com) mediante el comando searchsploit
+
+NOTA: Encontrará información detallada sobre cómo instalar SearchSploit en https://www.explotación-db.com/searchsploit/.
+
+Una de las explotaciones de SMB más utilizados en los últimos tiempos ha sido la explotación EternalBlue, filtrado por una entidad llamada Shadow Brokers que supuestamente robó Numerosas explotaciones de la Agencia de Seguridad Nacional (NSA) de EE. UU. La explotación exitosa de EternalBlue permite que un atacante remoto no autenticado comprometa un sistema afectado y ejecute código arbitrario. Esta explotación se ha utilizado en ransomware como WannaCry y Nyeta. Esta explotación se ha adaptado a muchas herramientas diferentes, incluido Metasploit.
+
+CONSEJO: ¿Cómo sabe dónde buscar una explotación específica, como la explotación EternalBlue? Para determinar la ubicación exacta de cualquier explotación, puede usar el comando búsqueda en Metasploit.
+
+
+
+
+
+
+
+Envenenamiento de la caché de DNS:
+El envenenamiento de la caché del DNS es otro ataque popular aprovechado por los agentes de amenazas. En resumen, el envenenamiento de la caché de DNS implica la manipulación de la caché de resolución de DNS mediante la inyección de datos DNS corruptos. Esto se hace para forzar al servidor DNS a enviar la dirección IP incorrecta a la víctima y redirigirla al sistema del atacante.
+
+Paso 1. El atacante corrompe los datos de la caché del servidor DNS para hacerse pasar por el sitio web theartofhacking.org. Antes de que el atacante ejecute el ataque de envenenamiento del DNS, el servidor DNS resuelve correctamente la dirección IP
+Paso 2. Después de que el atacante ejecuta el ataque de envenenamiento del DNS, el servidor DNS resuelve theartofhacking.org en la dirección IP del sistema del atacante
+Paso 3. La víctima envía una solicitud al servidor DNS para obtener la dirección IP del dominio 
+Paso 4. El servidor DNS responde con la dirección IP del sistema del atacante.
+Paso 5. La víctima envía un HTTP GET al sistema del atacante, y el atacante se hace pasar por el dominio 
+
+Los ataques de envenenamiento de caché de DNS también pueden combinar elementos de ingeniería social para manipular a las víctimas para que descarguen malware o para pedirles que ingresen datos confidenciales en formularios y aplicaciones falsificadas.
+CONSEJO: Puede configurar los servidores DNS para que dependan lo menos posible de las relaciones de confianza con otros servidores DNS a fin de mitigar los ataques de envenenamiento de la caché del DNS. Los servidores DNS que utilizan BIND 9.5.0 y versiones posteriores proporcionan funciones que ayudan a evitar ataques de envenenamiento de la caché de DNS. Estas características incluyen la asignación aleatoria de puertos y la provisión de identificadores de transacciones DNS criptográficamente seguras. Para protegerse contra los ataques de envenenamiento de la caché del DNS, también puede limitar las consultas DNS recursivas, almacenar solo los datos relacionados con el dominio solicitado y restringir las respuestas a las consultas para proporcionar información solo sobre el dominio solicitado. Además, las extensiones de seguridad del sistema de nombres de dominio (DNSSEC), una tecnología desarrollada por el Grupo de trabajo de ingeniería de Internet (IETF), proporciona autenticación de datos DNS segura y brinda protección contra el envenenamiento de la caché del DNS.
+
+
+
+
+
+
+
+
+Explotaciones de SNMP:
+El Protocolo simple de administración de redes (SNMP) es un protocolo que muchas personas y organizaciones utilizan para administrar dispositivos de red. SNMP utiliza el puerto UDP 161. En las implementaciones de SNMP, cada dispositivo de red contiene un agente SNMP que se conecta con un servidor SNMP independiente (también conocido como administrador SNMP). Un administrador puede utilizar SNMP para obtener información sobre el estado y la configuración de un dispositivo de red, para cambiar la configuración y realizar otras tareas administrativas. Como puede imaginar, esto es muy atractivo para los atacantes porque pueden aprovechar las vulnerabilidades de SNMP para realizar acciones similares de manera maliciosa.
+Hay varias versiones de SNMP: Las dos versiones más populares en la actualidad son SNMPv2c y SNMPv3. SNMPv2c utiliza cadenas de comunidad, que son contraseñas que se aplican a un dispositivo de red para permitir que un administrador restrinja el acceso al dispositivo de dos maneras: proporcionando acceso de solo lectura o de lectura/escritura.
+La información administrada del dispositivo se mantiene en una base de datos denominada Base de información de administración (MIB).
+Un ataque SNMP común implica que un atacante enumere los servicios SNMP y luego verifique las contraseñas SNMP predeterminadas configuradas. Desafortunadamente, este es uno de los principales defectos de muchas implementaciones porque muchos usuarios dejan credenciales SNMP débiles o predeterminadas en los dispositivos de red. SNMPv3 utiliza nombres de usuario y contraseñas y es más seguro que todas las versiones anteriores de SNMP. Sin embargo, los atacantes aún pueden realizar ataques de diccionario y de fuerza bruta contra las implementaciones de SNMPv3. Una implementación más moderna y de seguridad implica el uso de NETCONF con dispositivos de infraestructura más nuevos (como enrutadores y conmutadores).
+En el Módulo 3, aprendió a usar el escáner de Nmap. Puede aprovechar los scripts (o guiones) del motor de scripts de Nmap (NSE) para recopilar información de dispositivos habilitados para SNMP y forzar credenciales débiles. En Kali Linux, los guiones de NSE se encuentran en /usr/share/nmap/scripts de manera predeterminada.
+CONSEJO: ¡Cambie siempre las contraseñas predeterminadas! Como mejor práctica, también debe limitar el acceso SNMP solo a hosts confiables y bloquear el puerto UDP 161 a cualquier sistema que no sea de confianza. Otra práctica recomendada es utilizar SNMPv3 en lugar de versiones anteriores.
+
+
+
+
+
+
+
+Explotaciones de SMTP:
+Los atacantes pueden aprovechar servidores SMTP inseguros para enviar correo electrónico no deseado y realizar suplantación de identidad (phishing) y otros ataques basados en el correo electrónico. SMTP es un protocolo de servidor a servidor, que es diferente de los protocolos de cliente/servidor, como POP3 o IMAP.
+
+CONSEJO Para poder comprender cómo aprovechar las vulnerabilidades del protocolo de correo electrónico (como las vulnerabilidades basadas en SMTP), debe familiarizarse con los puertos TCP estándar utilizados en los diferentes protocolos de correo electrónico. Los siguientes puertos TCP se utilizan en los protocolos de correo electrónico más comunes:
+
+  Puerto TCP 25: el puerto predeterminado utilizado en SMTP para comunicaciones no cifradas.
+  Puerto TCP 465: el puerto registrado por la Autoridad de números asignados de Internet (IANA) para SMTP sobre SSL (SMTPS). SMTPS ha quedado en desuso en favor de STARTTLS.
+  Puerto TCP 587: protocolo SMTP seguro (SSMTP) para comunicaciones cifradas, según se define en RFC 2487, mediante STARTTLS. Los agentes de usuario de correo (MUA) utilizan el puerto TCP 587 para el envío de correo electrónico. STARTTLS también se puede utilizar a través del puerto TCP 25 en algunas implementaciones.
+  Puerto TCP 110: el puerto predeterminado utilizado por el protocolo POP3 en comunicaciones no cifradas.
+  Puerto TCP 995: el puerto predeterminado utilizado por el protocolo POP3 en las comunicaciones cifradas.
+  Puerto TCP 143: el puerto predeterminado utilizado por el protocolo IMAP en comunicaciones no cifradas.
+  Puerto TCP 993: el puerto predeterminado utilizado por el protocolo IMAP en las comunicaciones cifradas (SSL/TLS).
+
+Relés abiertos SMTP:
+SMTP retransmisión abierta es el término utilizado para un servidor de correo electrónico que acepta y retransmite (es decir, envía) correos electrónicos de cualquier usuario. Es posible abusar de estas configuraciones para enviar correos electrónicos falsificados, correo electrónico no deseado, suplantación de identidad (phishing) y otras estafas relacionadas con el correo electrónico. Nmap tiene un guion NSE para probar las configuraciones de retransmisiones abiertas. Los detalles sobre el guion están disponibles en https://svn.nmap.org/nmap/scripts/smtp-open-relay.nse
+
+Comandos SMTP útiles:
+Varios comandos SMTP pueden ser útiles para realizar una evaluación de seguridad de un servidor de correo electrónico. Los siguientes son algunos ejemplos:
+
+  HELO: se utiliza para iniciar una conversación SMTP con un servidor de correo electrónico. El comando va seguido de una dirección IP o un nombre de dominio (por ejemplo, HELO 10.1.2.14 ).
+  EHLO: se utiliza para iniciar una conversación con un servidor SMTP extendido (ESMTP). Este comando se usa de la misma manera que el comando HELO.
+  STARTTLS: se utiliza para iniciar una conexión de seguridad de la capa de transporte (TLS) a un servidor de correo electrónico.
+  RCPT: Se utiliza para indicar la dirección de correo electrónico del destinatario.
+  DATA: se utiliza para iniciar la transferencia del contenido de un mensaje de correo electrónico.
+  RSET: se utiliza para restablecer (cancelar) una transacción de correo electrónico.
+  MAIL: Se utiliza para indicar la dirección de correo electrónico del remitente.
+  QUIT: se utiliza para cerrar una conexión.
+  HELP: se utiliza para mostrar un menú de ayuda (si está disponible).
+  AUTH: se utiliza para autenticar un cliente en el servidor.
+  VRFY: se usa para verificar si existe la casilla de correo de un usuario.
+  EXPN: se utiliza para solicitar o expandir una lista de correo en el servidor remoto.
+
+Explotaciones conocidas del servidor SMTP:
+Es posible aprovechar las explotaciones que se han creado para aprovechar las vulnerabilidades conocidas relacionadas con SMTP.
+
+
+
+
+
+
+Explotaciones de FTP:
+Los atacantes suelen abusar de los servidores FTP para robar información. El protocolo FTP heredado no utiliza cifrado ni realiza ningún tipo de validación de integridad. La práctica recomendada dicta que implemente una alternativa más segura, como el Protocolo de transferencia de archivos seguro (FTPS) o el Protocolo de transferencia de archivos seguro (SFTP).
+Los protocolos SFTP y FTPS utilizan cifrado para proteger los datos; sin embargo, algunas implementaciones, como Blowfish y DES, ofrecen cifrados débiles (algoritmos de cifrado). Debe utilizar algoritmos más sólidos, como AES. De manera similar, los servidores SFTP y FTPS utilizan algoritmos de hash para verificar la integridad de la transmisión de archivos. SFTP usa SSH y FTPS usa FTP sobre TLS. Las mejores prácticas exigen deshabilitar los protocolos de hash débiles, como MD5 o SHA-1, y usar algoritmos más sólidos en la familia SHA-2 (como SHA-2 o SHA-512).
+Además, los servidores FTP a menudo permiten la autenticación de usuarios anónimos, de la que un atacante puede abusar para almacenar archivos no deseados en su servidor, potencialmente para la exfiltración. Por ejemplo, un atacante que pone en riesgo un sistema y extrae información confidencial puede almacenar esa información (como un trampolín) en cualquier servidor FTP que pueda estar disponible y permitir que cualquier usuario se conecte mediante una cuenta anónima.
+
+Los siguientes son varios procedimientos recomendados adicionales para mitigar el abuso y los ataques al servidor FTP:
+
+    Utilice contraseñas seguras y autenticación multifactor. Una buena práctica es utilizar una buena administración de credenciales y contraseñas seguras. Cuando sea posible, utilice la autenticación de dos factores para cualquier servicio o servidor crítico.
+    Implemente la seguridad de archivos y carpetas, asegurándose de que los usuarios tengan acceso a solo los archivos a los que tienen derecho.
+    Utilizar el cifrado en reposo, es decir, cifrar todos los archivos almacenados en el servidor FTP.
+    Bloquear cuentas de administración. Debe restringir los privilegios de administrador a una cantidad limitada de usuarios y exigirles que utilicen la autenticación de varios factores. Además, no utilice nombres de usuario de administrador comunes, como root o admin.
+    Mantenga actualizado el software del servidor FTPS o SFTP.
+    Utilice los cifrados validados FIPS 140-2 del gobierno de EE. UU. para obtener orientación general sobre qué algoritmos de cifrado utilizar.
+    Mantenga las bases de datos back-end en un servidor diferente al servidor FTP.
+    Requerir la reautenticación de las sesiones inactivas.
+
+
+
+
+
+
+
+
+
+Ataques de tipo Pass-the-Hash
+Todas las versiones de Windows almacenan las contraseñas como hashes en un archivo denominado Administrador de cuentas de seguridad (SAM). El sistema operativo no sabe cuál es la contraseña real porque almacena solo un hash de la contraseña. En lugar de utilizar un algoritmo de hash conocido, Microsoft creó su propia implementación que se ha desarrollado a lo largo de los años.
+Microsoft también tiene un conjunto de protocolos de seguridad para la autenticación, denominado New Technology LAN Manager (NTLM). NTLM tenía dos versiones: NTLMv1 y NTLMv2. Desde Windows 2000, Microsoft ha utilizado Kerberos en dominios de Windows. Sin embargo, NTLM aún se puede usar cuando el cliente se autentica en un servidor a través de una dirección IP o si un cliente se autentica en un servidor en un bosque de Active Directory (AD) diferente configurado para la confianza de NTLM en lugar de una confianza transitiva entre bosques. Además, es posible que NTLM se siga usando si el cliente se autentica en un servidor que no pertenece a un dominio o si la comunicación Kerberos está bloqueada por un cortafuego.
+El sistema operativo Windows y las aplicaciones de Windows piden a los usuarios que ingresen sus contraseñas cuando inician sesión. Luego, el sistema convierte las contraseñas en hashes (en la mayoría de los casos, mediante una API llamada LsaLogonUser). Un ataque de transferencia de hash evita este proceso y simplemente envía el hash al sistema para la autenticación.
+CONSEJO: Mimikatz es una herramienta utilizada por muchos evaluadores de penetración, atacantes e incluso malware que puede ser útil para recuperar hashes de contraseñas de la memoria; es una herramienta posterior a la explotación muy útil. Puede descargar la herramienta Mimikatz desde https://github.com/gentilkiwi/mimikatz. Metasploit también incluye Mimikatz como un script de Meterpreter para facilitar la explotación sin la necesidad de cargar ningún archivo al disco del host comprometido. Puede encontrar más información sobre la integración de Mimikatz / Metasploit en https://www.offensive-security.com/metasploit-unleashed/mimikatz/.
+
+
+
+
+
+
+
+
+
+Ataques basados en Kerberos y LDAP:
+Kerberos es un protocolo de autenticación definido en RFC 4120 que Windows ha utilizado durante varios años. Kerberos también se utiliza en numerosas aplicaciones y otros sistemas operativos. El sitio web del Consorcio de Kerberos proporciona información detallada sobre Kerberos en https://www.kerberos.org. Una implementación de Kerberos contiene tres elementos básicos:
+
+    Cliente
+    Servidor
+    Centro de distribución de claves (KDC), que incluye el servidor de autenticación y el servidor de concesión de tiquetes
+
+Pasos de la autenticación Kerberos:
+    Paso 1. El cliente envía una solicitud al servidor de autenticación dentro del KDC.
+    Paso 2. El servidor de autenticación envía una clave de sesión y un tiquete de concesión de tiquetes (TGT) que se utiliza para verificar la identidad del cliente.
+    Paso 3. El cliente envía el TGT al servidor de concesión de tiquetes.
+    Paso 4. El servidor de concesión de tiquetes genera y envía un tiquete al cliente.
+    Paso 5. El cliente presenta el tiquete al servidor.
+    Paso 6. El servidor concede acceso al cliente.
+
+Active Directory utiliza el Protocolo ligero de acceso a directorios (LDAP) como protocolo de acceso. La implementación de LDAP de Windows admite la autenticación Kerberos. LDAP utiliza una estructura jerárquica de árbol invertido denominada árbol de información de directorio (DIT). En LDAP, cada entrada tiene una posición definida. El nombre distinguido (DN) representa la ruta completa de la entrada.
+Uno de los ataques más comunes es el ataque del tiquete de oro de Kerberos. Un atacante puede manipular los tiquetes Kerberos basándose en los hashes disponibles comprometiendo un sistema vulnerable y obteniendo las credenciales de usuario local y los hashes de contraseña. Si el sistema está conectado a un dominio, el atacante puede identificar un hash de contraseña de Kerberos TGT (KRBTGT) para obtener el tiquete dorado.
+
+CONSEJO: Empire es una herramienta popular que se puede usar para realizar tiquetes de oro y muchos otros tipos de ataques. Empire es básicamente un marco de trabajo posterior a la explotación que incluye un agente de Windows puro de PowerShell y un agente de Python. Aprenderá más sobre las metodologías posteriores a la explotación más adelante en este módulo. Con Empire, puede ejecutar agentes de PowerShell sin necesidad de utilizar PowerShell. Puede descargar Empire y acceder a demostraciones, presentaciones y documentación en https://github.com/BC-SECURITY/Empire. En el ejemplo 5-13 se muestra el módulo golden_tiquete de Empire Mimikatz, que se puede usar para realizar un ataque de tiquete dorado. Cuando el módulo golden_tiquete de Empire Mimikatz se ejecuta en un sistema comprometido, se establece el tiquete dorado para el usuario que utiliza el hash de contraseña KRBTGT.
+Un ataque similar es el ataque del tiquete plata de Kerberos. Los tiquetes plateados son tiquetes de servicio falsificados para un servicio determinado en un servidor en particular. El sistema de archivos de Internet común (CIFS) de Windows le permite acceder a archivos en un servidor en particular y el servicio HOST le permite ejecutar schtasks.exe o Instrumentación de administración de Windows (WMI) en un servidor determinado. Para crear un tiquete plateado, necesita la cuenta del sistema (que termina en $), el identificador de seguridad (SID) para el dominio, el nombre de dominio completo y el servicio proporcionado (por ejemplo, CIFS, HOST). También puede utilizar herramientas como Empire para obtener la información relevante de un volcado de Mimikatz para un sistema comprometido.
+Otra debilidad en las implementaciones de Kerberos es el uso de la delegación de Kerberos sin restricciones. La delegación de Kerberos es una función que permite que una aplicación reutilice las credenciales del usuario final para acceder a los recursos alojados en un servidor diferente. Por lo general, debe permitir la delegación de Kerberos solo si el servidor de aplicaciones es de confianza; sin embargo, permitirlo podría tener consecuencias de seguridad negativas si se abusa y, por lo tanto, la delegación de Kerberos no está habilitada de manera predeterminada en Active Directory.
+
+Kerberoasting:
+Otro ataque contra las implementaciones basadas en Kerberos es Kerberoasting. Kerberoasting es una actividad posterior a la explotación que un atacante utiliza para extraer hashes de credenciales de cuentas de servicio de Active Directory para el descifrado fuera de línea. Es un ataque generalizado que explota una combinación de implementaciones de cifrado débiles y prácticas de uso de contraseñas inadecuadas. El kerberoasting puede ser un ataque eficaz porque el actor de la amenaza puede extraer los hashes de las credenciales de la cuenta de servicio sin enviar ningún paquete IP a la víctima y sin tener credenciales de administrador de dominio.
+
+
+
+
+
+
+
+
+
+
+
+
+Ataques en ruta:
+En un ataque en ruta (anteriormente conocido como ataque de intermediario [MITM]), el atacante se coloca en línea entre dos dispositivos o personas que se comunican para escuchar a escondidas (es decir, robar datos confidenciales) o manipular los datos que se transfieren (por ejemplo, mediante la corrupción o la modificación de datos). Los ataques en ruta pueden ocurrir en la capa 2 o en la capa 3.
+
+Suplantación de ARP y envenenamiento de caché ARP:
+El envenenamiento de la caché de ARP (también conocido como suplantación de ARP) es un ejemplo de un ataque que conduce a un escenario de ataque en ruta. Un ataque de suplantación de ARP puede apuntar a hosts, conmutadores y enrutadores conectados a una red de capa 2 envenenando los cachés ARP de los sistemas conectados a la subred e interceptando el tráfico destinado a otros hosts en la subred. En la Figura 5-5, el atacante falsifica las direcciones MAC de la capa 2 para que la víctima crea que la dirección de la capa 2 del atacante es la dirección de la capa 2 de su puerta de enlace predeterminada (10.2.3.4). Los paquetes que se supone que van a la puerta de enlace predeterminada son reenviados por el conmutador a la dirección de capa 2 del atacante en la misma red. El atacante puede reenviar los paquetes IP al destino correcto para permitir que el cliente acceda al servidor web (10.2.66.77).
+La suplantación de control de acceso a medios (MAC) es un ataque en el que un actor de amenazas suplanta la dirección MAC de otro dispositivo (generalmente un dispositivo de infraestructura, como un enrutador). La dirección MAC suele ser una dirección codificada en un controlador de interfaz de red. En entornos virtuales, la dirección MAC podría ser una dirección virtual (es decir, no asignada a un adaptador físico). Un atacante podría falsificar la dirección MAC de los sistemas físicos o virtuales para eludir las medidas de control de acceso o realizar un ataque en la ruta.
+NOTA: Una mitigación común para los ataques de envenenamiento de caché ARP es utilizar la inspección del protocolo de resolución dinámica de direcciones (DAI) en los conmutadores para evitar la suplantación de las direcciones de capa 2.
+
+Otro ejemplo de ataque en ruta de capa 2 implica colocar un conmutador en la red y manipular el protocolo de árbol de expansión (STP) para convertirlo en el conmutador raíz. Este tipo de ataque puede permitir que un atacante vea cualquier tráfico que deba enviarse a través del conmutador raíz.
+
+Un atacante puede llevar a cabo un ataque en ruta en la capa 3 colocando un enrutador dudoso en la red y luego engañando a los otros enrutadores para que crean que este nuevo enrutador tiene una mejor ruta que otros enrutadores. También es posible realizar un ataque en ruta comprometiendo el sistema de la víctima e instalando malware que pueda interceptar los paquetes enviados por la víctima. El malware puede capturar paquetes antes de cifrarlos si la víctima utiliza SSL/TLS / HTTPS o cualquier otro mecanismo. Una herramienta de ataque llamada SSLStrip utiliza la funcionalidad en ruta para ver de manera transparente el tráfico HTTPS, secuestrarlo y devolver enlaces HTTP no cifrados al usuario en respuesta. Esta herramienta fue creada por un investigador de seguridad llamado Moxie Marlinspike. Puede descargar la herramienta desde https://github.com/moxie0/sslstrip.
+
+Las siguientes son algunas recomendaciones de seguridad adicionales de capa 2 para proteger su infraestructura:
+
+    Seleccione una VLAN no utilizada (que no sea VLAN 1) y utilícela como VLAN nativa para todos sus enlaces troncales. No use esta VLAN nativa para ninguno de sus puertos de acceso habilitados. Evite el uso de la VLAN 1 en cualquier lugar porque es la predeterminada.
+    Configurar administrativamente puertos de conmutador como puertos de acceso para que los usuarios no puedan negociar un enlace troncal; también deshabilita la negociación de enlaces troncales (es decir, no permite el protocolo de enlace troncal dinámico [DTP]).
+    Limite la cantidad de direcciones MAC aprendidas en un puerto determinado mediante la función de seguridad de puertos.
+    Controle el árbol de expansión para evitar que los usuarios o dispositivos desconocidos lo manipulen. Puede hacerlo mediante las funciones BPDU Guard y Root Guard.
+    Desactive el Protocolo de detección de Cisco (CDP) en los puertos que enfrentan redes desconocidas o no confiables que no requieren CDP para nada positivo. (CDP opera en la capa 2 y puede proporcionar a los atacantes información que preferiría no divulgar).
+    En un conmutador nuevo, apague todos los puertos y asígnelos a una VLAN que no se use para nada más que un punto muerto. Luego, abra los puertos y asigne las VLAN correctas a medida que los puertos se asignan y se necesitan.
+    Utilice Root Guard para controlar qué puertos no pueden convertirse en puertos raíz para conmutadores remotos.
+    Utilice DAI.
+    Utilice IP Source Guard para evitar la suplantación de información de capa 3 por parte de los hosts.
+    Implemente 802.1X cuando sea posible para autenticar y autorizar a los usuarios antes de permitirles comunicarse con el resto de la red.
+    Utilice la detección del Protocolo de configuración dinámica de host (DHCP Snooping) para evitar que los servidores DHCP dudosos afecten la red.
+    Utilice el control de tormentas para limitar la cantidad de tráfico de difusión o multidifusión que fluye a través de un conmutador. Un atacante podría realizar un ataque de paquete de tormenta (o tormenta de difusión) para causar una condición de DoS. El atacante hace esto enviando transmisiones excesivas de paquetes IP (a menudo tráfico de difusión) en una red.
+    Implemente listas de control de acceso (ACL), como las ACL de capa 3 y capa 2, para el control del tráfico y la aplicación de políticas.
+
+Ataques de degradación:
+En un ataque de degradación, un atacante obliga al sistema a favorecer un protocolo de cifrado débil o un algoritmo de hash que puede ser susceptible a otras vulnerabilidades. Un ejemplo de vulnerabilidad y ataque de degradación es la vulnerabilidad de relleno de Oracle en cifrado heredado degradado (POODLE) en OpenSSL, que permitió al atacante negociar el uso de una versión inferior de TLS entre el cliente y el servidor. Puede encontrar más información sobre la vulnerabilidad POODLE en https://www.cisa.gov/news-events/alerts/2014/10/17/ssl-30-protocol-vulnerability-and-poodle-attack.
+POODLE era una vulnerabilidad específica de OpenSSL y ha sido parcheada desde 2014. Sin embargo, en la práctica, la eliminación de la compatibilidad con versiones anteriores suele ser la única forma de evitar otros ataques o fallas de degradación.
+
+
+
+
+
+
+
+
+
+
+
+Ataques de manipulación de rutas:
+Aunque existen muchos ataques de manipulación de rutas diferentes, uno de los más comunes es el ataque de secuestro de BGP. El Border Gateway Protocol (BGP) es un protocolo de enrutamiento dinámico que se utiliza para enrutar el tráfico de Internet. Un atacante puede lanzar un ataque de secuestro de BGP configurando o comprometiendo un enrutador de perímetro para anunciar prefijos que no se han asignado a su organización. Si el anuncio malicioso contiene una ruta más específica que el anuncio legítimo o que presenta una ruta más corta, el tráfico de la víctima podría redirigirse al atacante. En el pasado, los actores de amenazas han aprovechado los prefijos no utilizados para el secuestro de BGP a fin de evitar la atención del usuario u organización legítimos. La Figura 5-6 ilustra un ataque de manipulación de ruta de secuestro de BGP. El atacante compromete un enrutador y realiza un ataque de secuestro de BGP para interceptar el tráfico entre el host A y el host B.
+
+
+
+
+
+
+
+
+
+
+
+Ataques DoS y DDoS:
+Los ataques de denegación de servicio (DoS) y DoS distribuidos (DDoS) existen desde hace bastante tiempo, pero en los últimos años se ha producido una mayor conciencia sobre ellos. Los ataques de DoS generalmente se pueden dividir en tres categorías, que se describen en las siguientes secciones:
+
+    Dirigir
+    Botnet
+    Reflejado
+    Amplificación
+
+Ataques DoS directos:
+Un ataque directo de DoS se produce cuando el origen del ataque genera los paquetes, independientemente del protocolo, la aplicación, etc., que se envían directamente a la víctima del ataque. La Figura 5-7 ilustra un ataque de DoS directo.
+El atacante lanza un ataque DoS directo a un servidor web (la víctima) enviando numerosos paquetes TCP SYN. Este tipo de ataque tiene como objetivo inundar a la víctima con una cantidad abrumadora de paquetes para saturar el ancho de banda de su conexión o agotar los recursos del sistema del objetivo. Este tipo de ataque también se conoce como ataque de inundación SYN.
+Los ciberdelincuentes también pueden utilizar ataques DoS y DDoS para generar costos adicionales para la víctima cuando la víctima utiliza servicios en la nube. En la mayoría de los casos, cuando utiliza un servicio en la nube, como Amazon Web Services (AWS), Microsoft Azure o Digital Ocean, paga por uso. Los atacantes pueden lanzar ataques DDoS para hacer que pague más por el uso y los recursos.
+Otro tipo de ataque de DoS implica la explotación de vulnerabilidades, como los desbordamientos del búfer, para provocar el bloqueo de un servidor o incluso un dispositivo de infraestructura de red, lo que posteriormente causa una condición de DoS.
+
+Botnet:
+Muchos atacantes utilizan botnets (o redes de bots) para lanzar ataques de DDoS. Un _botnet _es un conjunto de máquinas comprometidas que el atacante puede manipular desde un sistema de comando y control (CnC o C2) para participar en un ataque de DDoS, enviar correos electrónicos no deseados y realizar otras actividades ilícitas. La Figura 5-8 muestra cómo un atacante puede utilizar una botnet para lanzar un ataque DDoS. La botnet está compuesta por terminales de usuario comprometidos (computadoras portátiles), enrutadores inalámbricos domésticos y dispositivos de Internet de las cosas (IoT), como cámaras IP.
+
+Ataques DoS y DDoS reflejados:
+Con los ataques DoS y DDoS reflejados, los atacantes envían a las fuentes paquetes falsos que parecen ser de la víctima y, luego, las fuentes se vuelven participantes involuntarios en el ataque reflejado al enviar el tráfico de respuesta a la víctima prevista. UDP se usa a menudo como mecanismo de transporte en tales ataques porque se falsifica más fácilmente debido a la falta de un protocolo de enlace de tres vías. Por ejemplo, si el atacante decide que quiere atacar a una víctima, puede enviar paquetes (por ejemplo, solicitudes de Network Time Protocol [NTP]) a una fuente que crea que estos paquetes son legítimos. La fuente luego responde a las solicitudes de NTP enviando las respuestas a la víctima, que no esperaba estos paquetes NTP de la fuente. La Figura 5-9 ilustra un ejemplo de un ataque de DoS reflejado.
+
+Ataques DDoS de amplificación:
+Un ataque de amplificación es una forma de ataque de DoS reflejado en el que el tráfico de respuesta (enviado por el participante involuntario) está compuesto por paquetes que son mucho más grandes que los enviados inicialmente por el atacante (falsificando a la víctima). Un ejemplo de este tipo de ataque es un atacante que envía consultas de DNS a un servidor DNS abierto. Luego, el servidor DNS responde con un tamaño de paquete mucho mayor que los paquetes de consulta iniciales. El resultado final es que la máquina de la víctima se ve inundada por paquetes grandes para los que nunca emitió consultas. 
+
+Como evaluador de penetración, es posible que tenga la tarea de realizar diferentes tipos de pruebas de esfuerzo de disponibilidad y demostrar cómo un ataque DDoS puede afectar un sistema o una red. En la mayoría de los casos, esos tipos de pruebas de esfuerzo se realizan en un entorno controlado y, por lo general, están fuera del alcance en los sistemas de producción.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
