@@ -671,6 +671,542 @@ Como evaluador de penetración, es posible que tenga la tarea de realizar difere
 
 
 
+Omisión del control de acceso a la red (NAC):
+NAC es una tecnología diseñada para interrogar a los terminales antes de unirse a una red cableada o inalámbrica. Normalmente se utiliza junto con 802.1X para la gestión y el cumplimiento de identidades. En resumen, se puede configurar un conmutador de acceso a la red o un punto de acceso inalámbrico (AP) para autenticar a los usuarios finales y realizar una evaluación de la postura de seguridad del dispositivo terminal para aplicar la política. Por ejemplo, puede verificar si tiene software de seguridad, como antivirus, antimalware y cortafuegos personales, antes de permitirle unirse a la red. También puede verificar si tiene una versión específica de un sistema operativo (por ejemplo, Microsoft Windows, Linux o macOS) y si su sistema ha sido parcheado para vulnerabilidades específicas.
+Además, los dispositivos habilitados para NAC (conmutadores, puntos de acceso inalámbricos, etc.) pueden utilizar varias técnicas de detección para detectar el terminal que intenta conectarse a la red. Un dispositivo habilitado para NAC intercepta las solicitudes de DHCP de los terminales. Un agente de escucha de difusión se utiliza para buscar el tráfico de red, como las solicitudes ARP y las solicitudes DHCP generadas por los terminales.
+Varias soluciones de NAC utilizan agentes basados en el cliente para realizar evaluaciones de la postura de seguridad de los terminales para evitar que un terminal se una a la red hasta que se evalúe. Además, algunos conmutadores se pueden configurar para enviar un mensaje de captura de SNMP cuando se registra una nueva dirección MAC con un determinado puerto de conmutador y para activar el proceso de NAC.
+Las implementaciones de NAC pueden permitir que nodos específicos, como impresoras, teléfonos IP y equipos de videoconferencia, se unan a la red mediante una lista de permitidos (o lista blanca) de direcciones MAC correspondientes a dichos dispositivos. Este proceso se conoce como omisión de autenticación (auth) MAC. La omisión de autenticación de MAC es una función de NAC. El administrador de la red puede preconfigurar o cambiar manualmente estos niveles de acceso. Por ejemplo, un dispositivo que accede a una VLAN específica (por ejemplo, VLAN 88) debe ser predefinido manualmente para un puerto específico por un administrador, lo que hace que la implementación de una política de red dinámica en varios puertos mediante la seguridad de puertos sea extremadamente difícil de mantener.
+Un atacante podría falsificar fácilmente una dirección MAC autorizada (en un proceso denominado suplantación de dirección MAC ) y omitir una configuración de NAC. Por ejemplo, es posible falsificar la dirección MAC de un teléfono IP y utilizarla para conectarse a una red. Esto se debe a que un puerto para el que está habilitada la omisión de autenticación de MAC puede habilitarse o deshabilitarse dinámicamente según la dirección MAC del dispositivo que se conecta a él.
+
+
+
+
+
+
+
+
+
+
+
+Saltos de VLAN:
+
+Una forma de identificar una LAN es decir que todos los dispositivos en la misma LAN tienen una dirección de red IP de capa 3 común y que también están ubicados en el mismo dominio de difusión de capa 2. Una LAN virtual (VLAN) es otro nombre para un dominio de difusión de capa 2. Una VLAN está controlada por un conmutador. El conmutador también controla qué puertos están asociados con qué VLAN. En la figura 5-12, si los conmutadores están en su configuración predeterminada, todos los puertos se asignan de manera predeterminada a la VLAN 1, lo que significa que todos los dispositivos, incluidos los dos usuarios y el enrutador, están en el mismo dominio de difusión o VLAN.
+A medida que comience a agregar cientos de usuarios, es posible que desee separar grupos de usuarios en subredes individuales y VLAN individuales asociadas. Para ello, asigne los puertos del conmutador a la VLAN y, luego, cualquier dispositivo que se conecte a ese puerto de conmutador específico será miembro de esa VLAN. Con suerte, todos los dispositivos que se conectan a los puertos del conmutador asignados a una VLAN determinada también tienen una dirección de red IP común configurada para que puedan comunicarse con otros dispositivos en la misma VLAN. A menudo, el Protocolo de configuración dinámica de host (DHCP) se utiliza para asignar direcciones IP de un rango de subred común a los dispositivos en una VLAN determinada.
+
+Un problema de tener dos usuarios en la misma VLAN pero no en el mismo conmutador físico es que el conmutador 1 le dice al conmutador 2 que se supone que una trama de difusión o unidifusión es para la VLAN 10. La solución es simple: para las conexiones entre dos conmutadores que contienen puertos en las VLAN que existen en ambos conmutadores, se pueden configurar puertos troncales específicos en lugar de puertos de acceso. Si los dos puertos de conmutador están configurados como enlaces troncales, incluyen información adicional denominada etiqueta que identifica a qué VLAN pertenece cada trama. 802.1Q es el protocolo estándar para este etiquetado. La información más importante (para esta discusión) en esta etiqueta es la ID de VLAN.
+
+Actualmente, los dos hosts en la Figura 5-12 (Host A y Host B) no pueden comunicarse porque están en VLAN separadas (VLAN 10 y VLAN 20, respectivamente). Los enlaces entre conmutadores (entre los dos conmutadores) se configuran como enlaces troncales. Una trama de difusión enviada desde el host A y recibida por el conmutador 1 reenviaría la trama por el enlace troncal etiquetado como perteneciente a la VLAN 10 al conmutador 2. El conmutador 2 vería la etiqueta, sabría que era una transmisión asociada con la VLAN 10, eliminaría la etiqueta y reenviaría la transmisión a todas las demás interfaces asociadas con la VLAN 10, incluido el puerto del conmutador que está conectado al host B. Estos dos componentes principales (los puertos de acceso que se asignan a una sola VLAN y los puertos troncales que etiquetan el tráfico para que un conmutador receptor sepa a qué VLAN pertenece una trama) son los bloques de construcción principales para la conmutación de capa 2, donde una VLAN puede extenderse más allá de un solo conmutador.
+
+El host A y el host B se comunican entre sí y pueden comunicarse con otros dispositivos en la misma VLAN (que también es la misma subred IP), pero no pueden comunicarse con dispositivos fuera de su VLAN local sin la ayuda de una puerta de enlace predeterminada. Un enrutador podría implementarse con dos interfaces físicas: una que se conecta a un puerto de acceso en el conmutador que se ha asignado a la VLAN 10 y otra interfaz física que se conecta a un puerto de acceso diferente que se ha configurado para una VLAN diferente. Con dos interfaces físicas y una dirección IP diferente en cada una, el enrutador podría realizar el enrutamiento entre las dos VLAN.
+
+Ahora que está familiarizado con las VLAN y su propósito, veamos los ataques relacionados con las VLAN. El salto de red de área local virtual (VLAN) es un método para obtener acceso al tráfico en otras VLAN que normalmente no serían accesibles. Hay dos métodos principales de salto de VLAN: suplantación de conmutador y etiquetado doble.
+
+Cuando se realiza un ataque de suplantación de conmutador, se imita un conmutador de enlace troncal enviando la etiqueta de VLAN correspondiente y los protocolos de enlace troncal específicos. Varios procedimientos recomendados pueden ayudar a mitigar los saltos de VLAN y otros ataques de capa 2. Anteriormente en el módulo, aprendió sobre diferentes procedimientos recomendados para proteger su infraestructura (incluida la capa 2). Siempre debe evitar el uso de la VLAN 1 en cualquier lugar porque es la predeterminada. No use esta VLAN nativa para ninguno de sus puertos de acceso habilitados. En un conmutador nuevo, apague todos los puertos y asígnelos a una VLAN que no se use para otra cosa que no sea un punto muerto. Luego, abra los puertos y asigne las VLAN correctas a medida que los puertos se asignan y se necesitan. Seguir estas mejores prácticas puede ayudar a evitar que un usuario negocie maliciosamente un enlace troncal con un conmutador y luego tenga acceso completo a cada una de las VLAN mediante el uso de software personalizado en la computadora que puede enviar y recibir tramas etiquetadas con dot1q. Un usuario con un enlace troncal establecido podría realizar saltos de VLAN a cualquier VLAN deseada simplemente etiquetando las tramas con la VLAN de su elección. También se pueden usar otros trucos maliciosos, pero forzar el puerto a un puerto de acceso sin negociación elimina este riesgo.
+
+Otro ataque de salto de VLAN 802.1Q es un ataque de salto de VLAN de doble etiquetado. La mayoría de los conmutadores configurados para 802.1Q eliminan solo una etiqueta 802.1Q. Un atacante podría cambiar la trama 802.1Q original para agregar dos etiquetas de VLAN: una etiqueta externa con su propia VLAN y una etiqueta interna oculta de la VLAN de la víctima. Cuando la trama con doble etiqueta llega al conmutador, solo procesa la etiqueta externa de la VLAN a la que pertenece la interfaz de entrada. El conmutador elimina la etiqueta de VLAN externa y reenvía la trama a todos los puertos que pertenecen a la VLAN nativa. Se reenvía una copia de la trama al enlace troncal para llegar al siguiente conmutador.
+
+
+
+
+
+
+
+
+
+
+
+Ataques de inanición de DHCP y servidores DHCP no autorizados:
+La mayoría de las organizaciones ejecutan servidores DHCP. Los dos ataques más populares contra los servidores y la infraestructura DHCP son inanición de DHCP y suplantación de DHCP (que implica servidores DHCP dudosos). En un ataque de inanición de DHCP, un atacante difunde una gran cantidad de mensajes de SOLICITUD de DHCP con direcciones MAC de origen falsificadas
+Si el servidor DHCP responde a todos estos mensajes falsos de SOLICITUD de DHCP, las direcciones IP disponibles en el ámbito del servidor DHCP se agotan en unos minutos o segundos. Una vez que se agota la cantidad disponible de direcciones IP en el servidor DHCP, el atacante puede configurar un servidor DHCP dudoso y responder a las nuevas solicitudes de DHCP de los clientes DHCP de la red
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Puntos de acceso no autorizados:
+Uno de los ataques inalámbricos más simplistas implica que un atacante instale un AP falso en una red para engañar a los usuarios para que se conecten a ese AP. Básicamente, el atacante puede usar ese AP dudoso para crear una puerta trasera y obtener acceso a la red y sus sistemas
+
+
+
+
+Ataques de gemelos malvados:
+En un ataque de gemelo malvado, el atacante crea un punto de acceso dudoso y lo configura exactamente igual que la red corporativa existente
+
+Por lo general, el atacante utiliza la suplantación de DNS para redirigir a la víctima a un portal cautivo clonado o un sitio web. Cuando los usuarios inician sesión en el gemelo malvado, un hacker puede inyectar fácilmente un registro DNS falsificado en la caché del DNS, cambiando el registro DNS de todos los usuarios en la red falsa. Cualquier usuario que inicie sesión en el gemelo malvado será redirigido por el registro DNS falsificado inyectado en la caché. Un atacante que realiza un ataque de envenenamiento de la caché del DNS desea que la caché del DNS acepte un registro falsificado. Algunas formas de defenderse contra la suplantación de DNS son el uso de filtrado de paquetes, protocolos criptográficos y funciones de detección de suplantación proporcionadas por las implementaciones inalámbricas modernas.
+
+CONSEJO: Los portales cautivos son portales web que se utilizan normalmente en redes inalámbricas en lugares públicos, como aeropuertos y cafeterías. Por lo general, se usan para autenticar usuarios o simplemente para mostrar los términos y condiciones que se aplican a los usuarios cuando utilizan la red inalámbrica. El usuario puede simplemente hacer clic en Aceptar para aceptar los términos y condiciones. En algunos casos, se le pide al usuario que vea un anuncio, proporcione una dirección de correo electrónico o realice alguna otra acción requerida. Los atacantes pueden hacerse pasar por portales cautivos para realizar ataques de ingeniería social o robar información confidencial de los usuarios.
+
+
+
+
+
+
+
+
+
+
+
+Ataques de disociación (o desautenticación)
+Un atacante puede hacer que clientes inalámbricos legítimos se desautentiquen de puntos de acceso inalámbricos legítimos o enrutadores inalámbricos para realizar una condición de denegación de servicio (DoS) o para hacer que esos clientes se conecten a un gemelo malvado. Este tipo de ataque también se conoce como ataque de disociación porque el atacante disocia (intenta desconectar) al usuario del AP inalámbrico de autenticación y luego realiza otro ataque para obtener las credenciales válidas del usuario.
+
+Un identificador de conjunto de servicios (SSID) es el nombre o identificador asociado con una red de área local inalámbrica (WLAN) 802.11. Los nombres de SSID se incluyen en texto sin formato en muchos paquetes inalámbricos y balizas. Un cliente inalámbrico necesita conocer el SSID para asociarse con un AP inalámbrico. Es posible configurar herramientas pasivas inalámbricas como Kismet o KisMAC para escuchar y capturar SSID y cualquier otro tráfico de red inalámbrica. Además, herramientas como Airmon-ng (que es parte del paquete Aircrack-ng) pueden realizar este reconocimiento. El conjunto de herramientas Aircrack-ng se puede descargar de https://www.aircrack-ng.org. 
+
+Puede usar la herramienta Airodump-ng para rastrear redes inalámbricas y obtener sus SSID, junto con los canales que operan.
+
+Muchas corporaciones e individuos configuran sus AP inalámbricos para no anunciar (difundir) sus SSID y para no responder a las solicitudes de sondeo de difusión. Sin embargo, si espías una red inalámbrica durante suficiente tiempo, eventualmente atraparás a un cliente intentando asociarse con el AP y luego podrás obtener el SSID. En el ejemplo 5-15, puede ver el identificador de conjunto de servicios básicos (BSSID) y el identificador de conjunto de servicios básicos extendido (ESSID) para cada red inalámbrica disponible. Básicamente, el ESSID identifica la misma red que el SSID. También puede ver el protocolo de cifrado ENC. Los protocolos de cifrado pueden ser Acceso protegido por Wi-Fi (WPA) versión 1, WPA versión 2 (WPA2), WPA versión 3 (WPA3), Privacidad equivalente por cable (WEP) o abierto (OPN). (Aprenderá las diferencias entre estos protocolos más adelante en este módulo).
+
+NOTA: Muchos adaptadores inalámbricos no le permiten inyectar paquetes en una red inalámbrica. Para obtener una lista de adaptadores inalámbricos y sus especificaciones que pueden ayudarlo a desarrollar su laboratorio inalámbrico, consulte https://theartofhacking.org/github.
+
+
+
+
+
+
+
+
+
+
+Ataques a la lista de redes preferidas:
+Los sistemas operativos y los suplicantes (clientes) inalámbricos, en muchos casos, mantienen una lista de redes inalámbricas confiables o preferidas. Esto también se denomina lista de redes preferidas (PNL). Un PNL incluye el SSID de la red inalámbrica, las contraseñas de texto sin formato o las contraseñas WEP o WPA. Los clientes utilizan estas redes preferidas para asociarse automáticamente a redes inalámbricas cuando no están conectados a un AP o un enrutador inalámbrico.
+
+Es posible que los atacantes escuchen estas solicitudes de clientes y se hagan pasar por las redes inalámbricas para que los clientes se conecten a los dispositivos inalámbricos de los atacantes y escuchen su conversación o manipulen su comunicación.
+
+
+
+
+
+Interferencia y bloqueo de la señal inalámbrica:
+El propósito de interferir las señales inalámbricas o causar interferencia en la red inalámbrica es crear una condición de DoS total o parcial en la red inalámbrica. Tal condición, si tiene éxito, es muy perjudicial. La mayoría de las implementaciones inalámbricas modernas proporcionan funciones integradas que pueden ayudar a detectar inmediatamente dichos ataques. Para interferir una señal de Wi-Fi o cualquier otro tipo de comunicación por radio, un atacante básicamente genera ruido aleatorio en las frecuencias que utilizan las redes inalámbricas. Con las herramientas y los adaptadores inalámbricos adecuados que admitan la inyección de paquetes, un atacante puede hacer que los clientes legítimos se desconecten de los dispositivos de la infraestructura inalámbrica.
+
+Conducción de guerra:
+Conducción de guerra es un método que utilizan los atacantes para encontrar puntos de acceso inalámbrico donde sea que estén. Con solo conducir (o caminar), un atacante puede obtener una cantidad significativa de información en un período muy corto de tiempo. Otro ataque similar es el vuelo de guerra, que implica el uso de una computadora portátil u otro dispositivo móvil para buscar redes inalámbricas desde un avión, como un dron u otro vehículo aéreo no tripulado (UAV).
+
+CONSEJO Un sitio popular entre los conductores de guerra es WiGLE (https://wigle.net). El sitio permite a los usuarios detectar redes Wi-Fi y cargar información sobre las redes mediante una aplicación móvil.
+
+
+
+
+
+
+
+Ataques por vector de inicialización (IV) y protocolos inalámbricos no seguros:
+Un atacante puede causar alguna modificación en el vector de inicialización (IV) de un paquete inalámbrico que se cifra durante la transmisión. El objetivo del atacante es obtener mucha información sobre el texto sin formato de un solo paquete y generar otra clave de cifrado que luego se puede usar para descifrar otros paquetes con el mismo IV. WEP es susceptible a muchos ataques diferentes, incluidos los ataques IV.
+
+Ataques contra WEP
+
+Dado que WEP es susceptible a muchos ataques diferentes, se considera un protocolo inalámbrico obsoleto. Se debe evitar WEP y muchos dispositivos de red inalámbrica ya no lo admiten. Las claves WEP existen en dos tamaños: claves de 40 bits (5 bytes) y de 104 bits (13 bytes). Además, WEP utiliza un IV de 24 bits, que se antepone a la clave previamente compartida (PSK). Cuando configura un dispositivo de infraestructura inalámbrica con WEP, los IV se envían en texto sin formato.
+
+WEP ha sido derrotado durante décadas. WEP usa RC4 de una manera que permite a un atacante descifrar la PSK con poco esfuerzo. El problema está relacionado con cómo WEP utiliza los IV en cada paquete. Cuando WEP usa RC4 para cifrar un paquete, antepone el IV a la clave secreta antes de incluir la clave en RC4. Posteriormente, un atacante tiene los primeros 3 bytes de una clave supuestamente “secreta” utilizada en cada paquete. Para recuperar el PSK, el atacante solo necesita recopilar suficientes datos del aire. Un atacante puede acelerar este tipo de ataque inyectando paquetes ARP (porque la longitud es predecible), lo que permite que el atacante recupere el PSK mucho más rápido. Después de recuperar la clave WEP, el atacante puede usarla para acceder a la red inalámbrica.
+
+Un atacante también puede usar el conjunto de herramientas Aircrack-ng para descifrar (recuperar) la WEP PSK. Para realizar este ataque con el paquete Aircrack-ng, un atacante primero inicia Airmon-ng
+
+
+
+
+
+
+
+
+
+Ataques contra WPA:
+
+WPA y WPA versión 2 (WPA2) son susceptibles a diferentes vulnerabilidades. La versión 3 de WPA (WPA3) aborda todas las vulnerabilidades a las que son susceptibles WPA y WPA2, y muchos profesionales de redes inalámbricas recomiendan WPA3 a organizaciones e individuos.
+
+Todas las versiones de WPA admiten diferentes métodos de autenticación, incluido PSK. WPA no es susceptible a los ataques IV que afectan a WEP; sin embargo, es posible capturar el protocolo de enlace de cuatro vías WPA entre un cliente y un dispositivo de infraestructura inalámbrica y luego aplicar la fuerza bruta a la PSK de WPA.
+
+Paso 1. Un atacante monitorea la red Wi-Fi y encuentra clientes inalámbricos conectados al SSID de la red corporativa.
+Paso 2. El atacante envía paquetes DeAuth para desautenticar al cliente inalámbrico.
+Paso 3. El atacante captura el protocolo de enlace de cuatro vías WPA y descifra la PSK de WPA. (Es posible usar listas de palabras y herramientas como Aircrack-ng para realizar este ataque).
+
+Cómo realizar este ataque con el conjunto de herramientas Aircrack-ng:
+
+Paso 1 y 2
+Paso 1. El atacante usa Airmon-ng para iniciar la interfaz inalámbrica en modo de monitoreo, mediante el comando airmon-ng start wlan0. (Este es el mismo proceso que se muestra para descifrar WEP en la sección anterior). La Figura 5-21 muestra tres ventanas de terminal. La segunda ventana de terminal desde la parte superior muestra la salida del comando airodump-ng wlan0, que muestra todas las redes inalámbricas adyacentes.
+
+Paso 2. Después de localizar la red corp-net, el atacante usa el comando airodump-ng, como se muestra en la primera ventana de terminal que se muestra en la Figura 5-21, para capturar todo el tráfico en un archivo de captura llamado wpa_capture, especificando el canal inalámbrico (11, en este ejemplo), el BSSID y la interfaz inalámbrica (wlan0).
+
+Paso 3
+Paso 3. El atacante utiliza el comando aireplay-ng, como se muestra en la Figura 5-22, para realizar un ataque de desautenticación contra la red inalámbrica. En el terminal que se muestra en la parte superior de la Figura 5-23, puede ver que el atacante ha recopilado el protocolo de enlace WPA.
+
+Paso 4
+Paso 4. El atacante utiliza el comando aircrack-ng para descifrar la PSK de WPA mediante una lista de palabras, como se muestra en la Figura 5-23. (El nombre del archivo es words en este ejemplo).
+
+Paso 5
+Paso 5. La herramienta tarda un poco en procesarse, según la potencia de la computadora y la complejidad de la PSK. Después de descifrar el WPA PSK, una ventana similar a la que se muestra en la Figura 5-24 muestra el WPA PSK (corpsupersecret en este ejemplo).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ataques de KRACK:
+
+Mathy Vanhoef y Frank Piessens, de la Universidad de Lovaina, encontraron y revelaron una serie de vulnerabilidades que afectan a WPA y WPA2. Estas vulnerabilidades, también denominadas KRACK (que significa ataque de reinstalación de claves), y los detalles sobre ellas se publican en https://www.krackattacks.com.
+
+El aprovechamiento de estas vulnerabilidades depende de la configuración específica del dispositivo. Una explotación exitosa podría permitir que atacantes no autenticados reinstalen una clave de cifrado o integridad utilizada anteriormente (ya sea a través del cliente o del punto de acceso, según la vulnerabilidad específica). Cuando una clave utilizada anteriormente se ha reinstalado correctamente (aprovechando las vulnerabilidades divulgadas), un atacante puede proceder a capturar el tráfico con la clave reinstalada e intentar descifrar dicho tráfico. Además, el atacante puede intentar falsificar o reproducir el tráfico visto anteriormente. Un atacante puede realizar estas actividades manipulando las retransmisiones de mensajes de protocolo de enlace.
+
+NOTA Para obtener detalles sobre los ataques KRACK, consulte https://blogs.cisco.com/security/wpa-vulns.
+
+La mayoría de los proveedores de redes inalámbricas han proporcionado parches que abordan las vulnerabilidades de KRACK, y WPA3 también aborda estas vulnerabilidades.
+
+
+
+
+
+Vulnerabilidades de WPA3:
+
+Ninguna tecnología o protocolo es perfecto. En los últimos años se han descubierto varias vulnerabilidades en WPA3. El protocolo WPA3 introdujo un nuevo protocolo de enlace denominado “protocolo de enlace libélula” que utiliza el Protocolo de autenticación extensible (EAP) para la autenticación. Varias vulnerabilidades pueden permitir que un atacante realice diferentes ataques de canal lateral, ataques de degradación y condiciones de DoS. Varias de estas vulnerabilidades fueron encontradas por el investigador de seguridad Mathy Vanhoef. (Para obtener más información sobre estos ataques, consulte https://wpa3.mathyvanhoef.com.)
+
+FragAttacks (que significa ataques de fragmentación y agregación) es otro tipo de vulnerabilidad que puede permitir que un atacante aproveche WPA3. Para obtener detalles y una demostración de FragAttacks, consulte https://www.fragattacks.com.
+
+
+
+
+
+Ataques de PIN de configuración protegida Wi-Fi (WPS):
+
+La configuración protegida de Wi-Fi (WPS) es un protocolo que simplifica la implementación de redes inalámbricas. Está implementado para que los usuarios simplemente puedan generar un WPA PSK con poca interacción con un dispositivo inalámbrico. Por lo general, para aprovisionar el dispositivo inalámbrico se utiliza un PIN impreso en el exterior del dispositivo inalámbrico o en la caja. A la mayoría de las implementaciones no les importa si intenta incorrectamente millones de combinaciones de PIN seguidas, lo que significa que estos dispositivos son susceptibles a ataques de fuerza bruta.
+
+Una herramienta llamada Reaver hace que los ataques WPS sean muy simples y fáciles de ejecutar. Puede descargar Reaver desde https://github.com/t6x/reaver-wps-fork-t6x.
+
+
+
+
+
+Ataques de KARMA:
+KARMA (que significa el karma ataca a las máquinas de radio automáticamente) es un ataque en la ruta que implica la creación de un AP falso y permitir que un atacante intercepte el tráfico inalámbrico. Una máquina de radio puede ser un dispositivo móvil, una computadora portátil o cualquier dispositivo habilitado para Wi-Fi.
+
+En un escenario de ataque de KARMA, el atacante escucha las solicitudes de sondeo de dispositivos inalámbricos y las intercepta para generar el mismo SSID para el que el dispositivo envía sondeos. Esto se puede utilizar para atacar la PNL, como se mencionó anteriormente en este módulo.
+
+
+
+
+
+
+
+Ataques de fragmentación:
+Los ataques de fragmentación inalámbrica se pueden utilizar para adquirir 1500 bytes de elementos del algoritmo de generación pseudoaleatoria (PRGA). Se pueden lanzar ataques de fragmentación inalámbrica contra dispositivos configurados para WEP. Estos ataques no recuperan la clave WEP en sí, pero pueden usar PRGA para generar paquetes con herramientas como Packetforge-ng (que es parte del conjunto de herramientas Aircrack-ng) para realizar ataques de inyección inalámbrica. El ejemplo 5-21 muestra las opciones de la herramienta Packetforge-ng.
+
+NOTA: Puede encontrar un documento que describe y demuestra los ataques de fragmentación en http://download.aircrack-ng.org/wiki-files/doc/Fragmentation-Attack-in-Practice.pdf.
+
+
+
+
+
+
+
+Recopilación de credenciales:
+La recopilación de credenciales es un ataque que implica la obtención o el compromiso de credenciales de usuario. Los ataques de recolección de credenciales se pueden lanzar mediante ataques comunes de ingeniería social, como los ataques de suplantación de identidad (phishing), y se pueden realizar haciéndose pasar por un AP inalámbrico o un portal cautivo para convencer a un usuario de que ingrese sus credenciales.
+
+Herramientas como Ettercap pueden falsificar las respuestas del DNS y desviar a un usuario que visita un sitio web al sistema local de un atacante. Por ejemplo, un atacante puede falsificar un sitio como Twitter y, cuando el usuario visita el sitio web (que parece el sitio web oficial de Twitter), se le solicita que inicie sesión y el atacante captura las credenciales del usuario. Otra herramienta que permite este tipo de ataque es el kit de herramientas de ingeniería social (SET), que aprendió en el módulo 4, “Ataques de ingeniería social”.
+
+
+
+
+
+
+
+Bluejacking y Bluesnarfing:
+Bluejacking es un ataque que puede realizarse mediante Bluetooth con dispositivos vulnerables dentro del alcance. Un atacante envía mensajes no solicitados a una víctima a través de Bluetooth, incluida una tarjeta de contacto (vCard) que generalmente contiene un mensaje en el campo del nombre. Esto se realiza mediante el protocolo de intercambio de objetos (OBEX). Una vCard puede contener nombre, dirección, números de teléfono, direcciones de correo electrónico y URL web relacionadas. Este tipo de ataque se ha realizado principalmente como una forma de correo electrónico no deseado a través de conexiones Bluetooth.
+
+NOTA Puede encontrar un excelente documento que describe el Bluejacking en http://acadpubl.eu/jsi/2017-116-8/articles/9/72.pdf.
+
+Otro ataque basado en Bluetooth es Bluesnarfing. Bluesnarfing se realizan para obtener acceso no autorizado a información desde un dispositivo habilitado para Bluetooth. Un atacante puede lanzar ataques de Bluesnarfing para acceder a calendarios, listas de contactos, correos electrónicos y mensajes de texto, imágenes o videos de la víctima.
+
+Bluesnarfing se considera más riesgoso que Bluejacking porque, mientras que los ataques de Bluejacking solo transmiten datos al dispositivo de la víctima, los ataques de Bluesnarfing realmente roban información del dispositivo de la víctima.
+
+Los ataques de Bluesnarfing también se pueden utilizar para obtener el número de identidad internacional de equipo móvil (IMEI) de un dispositivo. Los atacantes pueden desviar las llamadas y los mensajes entrantes a otro dispositivo sin que el usuario lo sepa.
+
+
+
+
+
+
+
+Ataques de Bluetooth de baja energía (BLE):
+Numerosos dispositivos de IoT utilizan Bluetooth de baja energía (BLE) para la comunicación. Las comunicaciones de BLE pueden ser susceptibles a ataques en ruta y un atacante podría modificar los mensajes de BLE entre sistemas que pensarían que se están comunicando con sistemas legítimos. Los ataques de DoS también pueden ser problemáticos para las implementaciones de BLE. Varios esfuerzos de investigación han demostrado diferentes ataques de BLE. Por ejemplo, los investigadores de la Universidad Estatal de Ohio han descubierto diferentes ataques de huellas digitales que pueden permitir que un atacante revele fallas de diseño y configuraciones incorrectas de los dispositivos BLE. Los detalles sobre esta investigación se pueden encontrar en https://dl.acm.org/doi/pdf/10.1145/3319535.3354240.
+
+
+
+
+
+
+
+Ataques de identificación por radiofrecuencia (RFID):
+La identificación por radiofrecuencia (RFID) es una tecnología que utiliza campos electromagnéticos para identificar y rastrear etiquetas que contienen información almacenada electrónicamente. Hay etiquetas RFID activas y pasivas. Las etiquetas pasivas utilizan energía de lectores RFID (a través de ondas de radio) y las etiquetas activas tienen fuentes de alimentación locales y pueden funcionar desde distancias más largas. Muchas organizaciones usan etiquetas RFID para rastrear el inventario o en tarjetas de identificación para ingresar a edificios o salas. Las etiquetas RFID pueden incluso implantarse en animales o personas para leer información específica que se puede almacenar en las etiquetas.
+
+Las etiquetas y los dispositivos RFID de baja frecuencia (LF) funcionan a frecuencias entre 120kHz y 140kHz e intercambian información a distancias inferiores a 3 pies. Las etiquetas y los dispositivos RFID de alta frecuencia (HF) funcionan a una frecuencia de 13,56 MHz e intercambian información a distancias de entre 3 y 10 pies. Las etiquetas y los dispositivos RFID de frecuencia ultraalta (UHF) funcionan a frecuencias entre 860 MHz y 960 MHz (regional) e intercambian información a distancias de hasta 30 pies.
+
+Algunos ataques se lanzan comúnmente contra dispositivos RFID:
+
+Los atacantes pueden robar silenciosamente información de RFID (como una tarjeta de identificación o una etiqueta) con un lector de RFID como Proxmark3 (https://proxmark.com) con solo caminar cerca de una persona o una etiqueta.
+Los atacantes pueden crear y clonar una etiqueta RFID (en un proceso denominado clonación RFID). Luego pueden usar las etiquetas RFID clonadas para ingresar a un edificio o una sala específica.
+Los atacantes pueden implantar skimmers detrás de los lectores de tarjetas RFID en un edificio o una habitación.
+Los atacantes pueden utilizar antenas amplificadas para realizar ataques de amplificación NFC. Los atacantes también pueden utilizar antenas amplificadas para exfiltrar pequeñas cantidades de datos, como contraseñas y claves de cifrado, a distancias relativamente largas.
+
+
+
+
+
+
+
+Difusión de contraseñas:
+La propagación de contraseñas es un tipo de ataque de credenciales en el que un atacante fuerza bruta inicia sesión (es decir, intenta autenticarse varias veces) en función de una lista de nombres de usuario con contraseñas predeterminadas de sistemas o aplicaciones comunes. Por ejemplo, un atacante podría intentar iniciar sesión con la palabra contraseña1 utilizando numerosos nombres de usuario en una lista de palabras.
+
+Un ataque similar es el relleno de credenciales. En este tipo de ataque, el atacante realiza una inyección automatizada de nombres de usuario y contraseñas que han sido expuestos en infracciones anteriores. Puede obtener más información sobre los ataques de relleno de credenciales en https://owasp.org/www-community/attacks/Credential_stuffing.
+
+
+
+
+
+Encadenamiento de explotaciones:
+La mayoría de los ataques sofisticados aprovechan múltiples vulnerabilidades para comprometer los sistemas. Un atacante puede “encadenar” (es decir, utilizar varias) explotaciones contra vulnerabilidades conocidas o de día cero para comprometer sistemas, robar, modificar o corromper datos.
+
+
+
+
+
+
+
+
+
+
+
+
+MAIL Utilizado para denotar la dirección de correo electrónico del remitente
+RSET Utilizado para cancelar una transacción de correo electrónico
+EHELO Utilizado para iniciar una conversación con un servidor de protocolo simple de transporte de correo extendido
+DATA Utilizado para iniciar la transferencia del contenido de un mensaje de correo electrónico
+STARTTLS — Utilizado para iniciar una conexión de seguridad de la capa de transporte a un servidor de correo electrónico
+HELO Utilizado para iniciar una conversación SMTP con un servidor de correo electrónico
+
+
+
+Los siguientes son varios procedimientos recomendados adicionales para mitigar el abuso y los ataques al servidor FTP:
++ Utilice contraseñas seguras y autenticación multifactor. Una buena práctica es utilizar una buena administración de credenciales
+y contraseñas seguras. Cuando sea posible, utilice la autenticación de dos factores para cualquier servicio o servidor crítico.
++ Implemente la seguridad de archivos y carpetas, asegurándose de que los usuarios solo tengan acceso a los archivos a los que
+tienen derecho.
++ Usar cifrado en reposo: cifre todos los archivos almacenados en el servidor FTP.
++ Bloquear cuentas de administración. Debe restringir los privilegios de administrador a una cantidad limitada de usuarios y
+exigirles que utilicen la autenticación de varios factores. Además, no utilice nombres de usuario de administrador comunes,
+como root o admin.
++ Mantenga actualizado el software del servidor FTPS o SFTP.
++ Utilice los cifrados de cifrado validados por FIPS 140-2 del gobierno de los EE. UU. Para obtener una orientación general sobre
+qué algoritmos de cifrado usar.
++ Mantenga las bases de datos back-end en un servidor diferente al servidor FTP.
++ Requerir la reautenticación de las sesiones inactivas.
++ Desactiva los inicios de sesión anónimos.
+
+
+
+DOS reflejado: Este ataque utiliza paquetes falsificados que parecen ser de la víctima. Luego, las fuentes se vuelven participantes involuntarios en el ataque al enviar el tráfico de respuesta a la víctima prevista.
+Amplificación de DNS: Se trata de un ataque en el que el atacante explota vulnerabilidades en los servidores de destino para convertir inicialmente pequeñas consultas en cargas útiles mucho más grandes, que se utilizan para inutilizar los servidores de la víctima.
+DOS directo: Esto ocurre cuando el origen del ataque genera los paquetes, independientemente del protocolo, la aplicación, etc., que se envían directamente a la víctima del ataque.
+DDOS: Este ataque utiliza botnets que pueden manipularse desde un sistema de comando y control (CnC o C2).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+El Protocolo HTTP:
+Veamos algunos hechos y definiciones antes de pasar a los detalles sobre HTTP:
+
+El protocolo HTTP 1.1 se define en las RFC 7230-7235.
+En los ejemplos de este módulo, cuando hacemos referencia a un servidor HTTP, básicamente nos referimos a un servidor web.
+Cuando nos referimos a clientes HTTP, estamos hablando de navegadores, proxies, clientes de API y otros programas de clientes HTTP personalizados.
+HTTP es un protocolo muy simple, lo cual es bueno y malo.
+En la mayoría de los casos, HTTP se clasifica como un protocolo sin estado que no depende de una conexión persistente para la lógica de comunicación.
+Una transacción HTTP consiste en una única solicitud de un cliente a un servidor, seguida de una única respuesta del servidor al cliente.
+HTTP es diferente de los protocolos con estado, como FTP, SMTP, IMAP y POP. Cuando un protocolo tiene estado, las secuencias de comandos relacionados se tratan como una única interacción.
+Un servidor debe mantener el estado de su interacción con el cliente durante la transmisión de comandos sucesivos hasta que finalice la interacción.
+Una secuencia de comandos transmitidos y ejecutados a menudo se denomina sesión.
+
+Los proxies HTTP actúan como servidores y clientes. Los proxies realizan solicitudes a los servidores web en nombre de otros clientes. Permiten las transferencias HTTP a través de firewalls y también pueden proporcionar soporte para el almacenamiento en caché de mensajes HTTP. Los proxies pueden realizar otros roles en entornos complejos, incluida la traducción de direcciones de red (NAT) y el filtrado de solicitudes HTTP.
+
+NOTA Más adelante en este módulo, aprenderá a utilizar herramientas como Burp y el proxy ZAP para interceptar las comunicaciones entre un navegador o un cliente y un servidor web.
+
+HTTP es un protocolo de nivel de aplicación en el conjunto de protocolos TCP/IP y utiliza TCP como protocolo de capa de transporte subyacente para transmitir mensajes. HTTP utiliza un modelo de solicitud/respuesta, lo que básicamente significa que un programa cliente HTTP envía un mensaje de solicitud HTTP a un servidor y, a continuación, el servidor devuelve un mensaje de respuesta HTTP
+
+
+
+
+
+la siguiente estructura:
+
+El método: En este ejemplo, el método es HTTP GET, aunque podría ser cualquiera de los siguientes:
+- GET: Recupera información del servidor
+- HEAD: Básicamente lo mismo que GET pero devuelve solo encabezados HTTP y no el cuerpo del documento
+- POST: envía datos al servidor (normalmente mediante formularios HTML, solicitudes de API, etc.)
+- TRACE: Realiza una prueba de bucle invertido del mensaje a lo largo de la ruta al recurso de destino
+- PUT: Carga una representación del URI especificado
+- DELETE: Elimina el recurso especificado
+- OPTIONS: Devuelve los métodos HTTP que admite el servidor
+- CONNECT: Convierte la conexión de solicitud en un túnel TCP/IP transparente.
+El URI y el campo de ruta al recurso: Esto representa la parte de la ruta de la URL solicitada.
+El campo de número de versión de la solicitud: Esto especifica la versión de HTTP utilizada por el cliente.
+El user agent: En este ejemplo, se utilizó Chrome para acceder al sitio web. 
+
+
+
+
+La respuesta del servidor incluye un código de estado de tres dígitos y una breve explicación legible del código de estado. Debajo puede ver los datos de texto (que es el código HTML que proviene del servidor y muestra el contenido del sitio web).
+
+NOTA Es importante que se familiarice con los códigos de estado de los mensajes HTTP. W3Schools ofrece una muy buena explicación en https://www.w3schools.com/tags/ref_httpmessages.asp.
+
+Los mensajes de código de estado HTTP pueden estar en los siguientes rangos:
+
+Los mensajes en el rango de 100 son informativos.
+Los mensajes en el rango 200 están relacionados con transacciones exitosas.
+Los mensajes en el rango 300 están relacionados con las redirecciones HTTP.
+Los mensajes en el rango 400 están relacionados con errores del cliente.
+Los mensajes en el rango 500 están relacionados con errores del servidor.
+Estructura de URL HTTP
+
+HTTP y otros protocolos usan URL, y definitivamente está familiarizado con las URL porque las usa todos los días. En esta sección, se explican los elementos de una URL para que pueda comprender mejor cómo abusar de algunos de estos parámetros y elementos desde una perspectiva de seguridad ofensiva.
+
+Considere la URL https://theartofhacking.org:8123/dir/test;id=89?name= omar&x=true. Desglosemos esta URL en sus partes:
+
+esquema: es la parte de la URL que designa el protocolo subyacente que se utilizará (por ejemplo, HTTP, FTP); le siguen dos puntos y dos barras diagonales ( // ). En este ejemplo, el esquema es http.
+host: es la dirección IP (numérica o basada en DNS) del servidor web al que se accede; generalmente sigue a los dos puntos y dos barras diagonales. En este caso, el host es theartofhacking.org.
+port: esta parte opcional de la URL designa el número de puerto que escucha el servidor web de destino. (El número de puerto predeterminado para los servidores HTTP es 80, pero algunas configuraciones están configuradas para usar un número de puerto alternativo). En este caso, el servidor está configurado para utilizar el puerto 8123.
+ruta (path): es la ruta desde el directorio “raíz” del servidor al recurso deseado. En este caso, puede ver que hay un directorio llamado dir. (Tenga en cuenta que, en realidad, los servidores web pueden usar alias para apuntar a documentos, puertas de enlace y servicios a los que no se puede acceder explícitamente desde el directorio raíz del servidor).
+path-segment-params: esta es la parte de la URL que incluye pares de nombre/valor opcionales (es decir, parámetros de segmento de ruta) Un parámetro de segmento de ruta suele estar precedido por un punto y coma (según el lenguaje de programación utilizado) e inmediatamente después de la información de la ruta. En este ejemplo, el parámetro del segmento de ruta es id=89. Los parámetros de segmento de ruta no se usan comúnmente. Además, vale la pena mencionar que estos parámetros son diferentes de los parámetros de query-string (a menudo denominados parámetros de URL ).
+query string: esta parte opcional de la URL contiene pares de nombre/valor que representan los parámetros dinámicos asociados con la solicitud. Estos parámetros se incluyen comúnmente en enlaces con fines de seguimiento y configuración de contexto. También pueden producirse a partir de variables en formularios HTML. Por lo general, el query-string está precedido por un signo de interrogación. Los signos de igual (=) separan los nombres y los valores, y los símbolos de unión ( & ) marcan los límites entre los pares de nombre/valor. En este ejemplo, el query-string es name=omar&x=true.
+NOTA La notación de URL aquí se aplica a la mayoría de los protocolos (por ejemplo, HTTP, HTTPS y FTP).
+
+Además, otros protocolos, como HTML y CSS, se utilizan en cosas como el Protocolo Simple de Acceso a Objetos (SOAP) y las API de RESTful. Los ejemplos incluyen JSON, XML y el Servicio de Procesamiento Web (WPS) (que no es lo mismo que WPS en las redes inalámbricas).
+
+CONSEJO: Una API REST (o API RESTful) es un tipo de interfaz de programación de aplicaciones (API) que cumple con la especificación del estilo arquitectónico de transferencia de estado representacional (REST) y permite la interacción con servicios web. Las API REST se utilizan para crear e integrar software de múltiples aplicaciones. En resumen, si desea interactuar con un servicio web para recuperar información o agregar, eliminar o modificar datos, una API lo ayuda a comunicarse con dicho sistema para cumplir con la solicitud. Las API REST usan JSON como formato estándar para los resultados y las solicitudes. SOAP es una tecnología anterior utilizada en API heredadas que usan XML en lugar de JSON. Llamada a Procedimientos Remotos en Lenguaje de Marcado Extensible (XML-RPC) es un protocolo en aplicaciones heredadas que usa XML para codificar sus llamadas y aprovecha HTTP como mecanismo de transporte.
+
+CONSEJO: Como ejercicio de práctica, use curl para crear una conexión con el sitio web web.h4cker.org. Intente cambiar la versión a HTTP 2.0 y use Wireshark. ¿Puede ver la diferencia entre las versiones de HTTP en una captura de paquetes? Consulte https://curl.haxx.se/docs/http2.html para obtener la documentación de curl.
+
+
+
+
+
+
+
+Sesiones Web:
+Una sesión web es una secuencia de transacciones de solicitud y respuesta HTTP entre un cliente web y un servidor. Estas transacciones incluyen tareas previas de autenticación, el proceso de autenticación, administración de sesiones, control de acceso y finalización de sesiones. Numerosas aplicaciones web realizan un seguimiento de la información sobre cada usuario durante una transacción web. Varias aplicaciones web tienen la capacidad de establecer variables como derechos de acceso y configuraciones de localización. Estas variables se aplican a todas y cada una de las interacciones que tiene un usuario con la aplicación web durante la sesión.
+
+Las aplicaciones web pueden crear sesiones para realizar un seguimiento de los usuarios anónimos después de la primera solicitud de usuario. Por ejemplo, una aplicación puede recordar la preferencia de idioma del usuario cada vez que visita el sitio o la interfaz de la aplicación. Además, una aplicación web utiliza una sesión después de que el usuario se ha autenticado. Esto permite que la aplicación identifique al usuario en cualquier solicitud posterior y pueda aplicar controles de acceso de seguridad y aumentar la facilidad de uso de la aplicación. En resumen, las aplicaciones web pueden proporcionar capacidades de sesión antes y después de la autenticación.
+
+Después de establecer una sesión autenticada, el ID de la sesión (o token) equivale temporalmente al método de autenticación más seguro utilizado por la aplicación, como los nombres de usuario y las contraseñas, las contraseñas de un solo uso y los certificados digitales basados en el cliente.
+
+NOTA Un buen recurso que proporciona mucha información sobre la autenticación de aplicaciones es la Hoja de Referencia para la Autenticación de OWASP, disponible en https://www.owasp.org/index.php/Authentication_Cheat_Sheet.
+
+Para mantener el estado de autenticación y realizar un seguimiento del progreso del usuario, las aplicaciones proporcionan a los usuarios ID de sesión o tokens. Se asigna un token en el momento de la creación de la sesión, y el usuario y la aplicación web lo comparten e intercambian durante la sesión. El ID de la sesión es un par de nombre/valor.
+
+Los nombres de ID de sesión utilizados por los marcos de desarrollo de aplicaciones web más comunes pueden identificarse fácilmente. Por ejemplo, puede usar huellas digitales de PHPSESSID (PHP), JSESSIONID (J2EE), CFID y CFTOKEN (ColdFusion), ASP.NET_SessionId (ASP.NET) y muchos otros. Además, el nombre del ID de la sesión puede indicar qué marco y qué lenguajes de programación utiliza la aplicación web.
+
+Se recomienda cambiar el nombre de ID de sesión predeterminado del marco de desarrollo web a un nombre genérico, como id.
+
+La ID de la sesión debe ser lo suficientemente larga para evitar ataques de fuerza bruta. A veces, los desarrolladores lo establecen en unos pocos bits, aunque debe ser de al menos 128 bits (16 bytes).
+
+NOTA Es muy importante que la ID de una sesión sea única e impredecible. Debe usar un buen generador de bits aleatorios determinista (DRBG) para crear un valor de ID de sesión que proporcione al menos 256 bits de entropía.
+
+Hay varios mecanismos disponibles en HTTP para mantener el estado de la sesión dentro de las aplicaciones web, incluidas las cookies (en el encabezado HTTP estándar), los parámetros de URL y la reescritura definidos en RFC 3986 y los argumentos de URL en las solicitudes GET. Además, los desarrolladores utilizan argumentos del cuerpo en las solicitudes POST, como campos de formulario ocultos (formularios HTML) o encabezados HTTP exclusivos. Sin embargo, uno de los mecanismos de intercambio de ID de sesión más utilizados son las cookies, que ofrecen capacidades avanzadas que no están disponibles en otros métodos.
+
+Incluir el ID de la sesión en la URL puede provocar la manipulación del ID o ataques de fijación de la sesión. Por lo tanto, es importante mantener el ID de la sesión fuera de la URL.
+
+CONSEJO: Los marcos de desarrollo web, como ASP.NET, PHP y Ruby on Rails, proporcionan sus propias funciones de administración de sesiones e implementaciones asociadas. Se recomienda utilizar estos marcos integrados en lugar de crear los suyos propios desde cero, ya que han sido probados por muchas personas. Cuando realiza pruebas de penetración, es probable que encuentre personas que intentan crear sus propios marcos. Además, JSON Web Token (JWT) se puede utilizar para la autenticación en aplicaciones modernas.
+
+Esto puede parecer bastante obvio, pero debe recordar cifrar una sesión web completa, no solo para el proceso de autenticación donde se intercambian las credenciales de usuario, sino también para garantizar que la ID de la sesión se intercambie solo a través de un canal cifrado. El uso de un canal de comunicación cifrado también protege la sesión contra algunos ataques de fijación de sesión, en los que el atacante puede interceptar y manipular el tráfico web para inyectar (o fijar) la ID de sesión en el navegador web de la víctima.
+
+Los mecanismos de administración de sesiones basados en cookies pueden hacer uso de dos tipos de cookies: cookies no persistentes (o de sesión) y cookies persistentes. Si una cookie tiene un atributo Max-Age o Expires, se considera una cookie persistente y el navegador web la almacena en un disco hasta la fecha de vencimiento. Las aplicaciones web y los clientes comunes priorizan el atributo Max-Age sobre el atributo Expires.
+
+Las aplicaciones modernas suelen realizar un seguimiento de los usuarios después de la autenticación mediante cookies no persistentes. Esto fuerza la eliminación de la información de la sesión del cliente si se cierra la instancia del navegador web actual. Por eso es importante utilizar cookies no persistentes: para que el ID de sesión no permanezca en la caché del cliente web durante largos períodos de tiempo.
+
+Una aplicación debe validar y verificar cuidadosamente los ID de sesión. Según el mecanismo de administración de sesiones utilizado, el ID de la sesión se recibirá en un parámetro GET o POST, en la URL o en un encabezado HTTP mediante cookies.
+
+Si las aplicaciones web no validan y filtran los valores de ID de sesión no válidos, pueden utilizarse para explotar otras vulnerabilidades web, como la inyección de SQL si los ID de sesión se almacenan en una base de datos relacional o secuencias de comandos entre sitios (XSS) persistentes, si las ID de sesión se almacenan y reflejan posteriormente en la aplicación web.
+
+NOTA: Aprenderá sobre la inyección SQL y XSS más adelante en este módulo.
+
+
+
+
+
+
+
+Los Top 10 de OWASP:
+El Proyecto Abierto de Seguridad en Aplicaciones Web (Open Web Application Security Project) (OWASP) es una organización internacional dedicada a educar a los profesionales del sector, crear herramientas y difundir los procedimientos recomendados para proteger las aplicaciones web y los sistemas subyacentes. Hay docenas de capítulos de OWASP en todo el mundo. Se recomienda que se familiarice con el sitio web de OWASP (https://www.owasp.org) y su orientación.
+
+OWASP publica y actualiza periódicamente una lista de los 10 riesgos principales (top 10) de seguridad de las aplicaciones. El Top 10 de OWASP es un documento de concientización y un esfuerzo de la comunidad (visite https://owasp.org/www-project-top-ten/). También puede contribuir y revisar a través del repositorio de GitHub de OWASP en https://github.com/OWASP/Top10. Este curso cubre las vulnerabilidades destacadas en la lista de los Top 10 de OWASP. La mejor manera de mantenerse al día con las actualizaciones de OWASP es navegando directamente a su sitio web. Este módulo cubre las vulnerabilidades en el Top 10 de OWASP, como las vulnerabilidades de inyección y secuencias de comandos entre sitios (XSS).
+
+
+
+
+
+
+
+Descripción General:
+En el Módulo 10, “Herramientas y Análisis de Código”, aprenderá detalles sobre docenas de herramientas de pruebas de penetración Esta sección proporciona algunos consejos e instrucciones sobre cómo puede crear su propio laboratorio para las pruebas de penetración de aplicaciones web, incluida la implementación de aplicaciones intencionalmente vulnerables en un entorno seguro.
+
+Si bien la mayoría de las herramientas de prueba de penetración cubiertas en el curso se pueden descargar de forma aislada e instalar en muchos sistemas operativos diferentes, varias distribuciones populares de Linux relacionadas con la seguridad contienen cientos de herramientas. Estas distribuciones facilitan el inicio sin tener que preocuparse por las muchas dependencias, bibliotecas y problemas de compatibilidad que puede encontrar. Las siguientes son las tres distribuciones de Linux más populares para la piratería ética (pruebas de penetración):
+
+Kali Linux: Esta es probablemente la distribución de pruebas de penetración de seguridad más popular de las tres. Kali es una distribución basada en Debian soportada y mantenida principalmente por Offensive Security que se puede descargar de https://www.kali.org. Puede instalarlo fácilmente en sistemas bare-metal, máquinas virtuales (VM) e incluso dispositivos como Raspberry Pi y Chromebooks.
+NOTA La gente de Offensive Security ha creado una capacitación gratuita y un libro que lo guía sobre cómo instalarlo en su sistema (consulte https://kali.training).
+
+Parrot OS: esta es otra distribución popular de Linux utilizada por muchos evaluadores de penetración e investigadores de seguridad. También puede instalarlo en máquinas bare-metal y en VM. Puede descargar Parrot desde https://www.parrotsec.org.
+BlackArch Linux: esta distribución de pruebas de penetración de seguridad cada vez más popular se basa en Arch Linux y viene con más de 1900 herramientas y paquetes diferentes. Puede descargar BlackArch Linux desde https://blackarch.org.
+Hay varias aplicaciones y máquinas virtuales intencionalmente vulnerables que puede implementar en un entorno de laboratorio (seguro) para practicar sus habilidades. También puede ejecutar algunos de ellos en contenedores de Docker. Omar Santos ha incluido en su repositorio de GitHub en https://h4cker.org/github numerosos recursos y enlaces a otras herramientas y sistemas intencionalmente vulnerables que puede implementar en su laboratorio.
+
+Si recién está comenzando, la forma más sencilla de practicar sus habilidades en un entorno seguro es instalar Kali Linux o Parrot OS en una VM y configurar WebSploit Labs (consulte websploit.org). Varios de los ejemplos que se tratan más adelante en este módulo y en otras partes de este curso utilizan las herramientas y las aplicaciones intencionalmente vulnerables que se ejecutan en WebSploit Labs.
+
+
+
+
+
+
+Descripción General:
+Las fallas de lógica empresarial permiten que un atacante utilice transacciones y flujos legítimos de una aplicación de una manera que da como resultado un comportamiento o un resultado negativo. La mayoría de los problemas de lógica empresarial son diferentes de las vulnerabilidades de seguridad típicas de una aplicación (como XSS, CSRF e inyección SQL). Un desafío con las fallas de la lógica empresarial es que, por lo general, no se pueden encontrar mediante escáneres u otras herramientas similares.
+
+La probabilidad de que los agentes de amenazas exploten las fallas de la lógica empresarial depende de muchas circunstancias. Sin embargo, estos ataques pueden tener graves consecuencias. La validación de datos y el uso de un modelo de amenazas detallado pueden ayudar a prevenir y mitigar los efectos de las fallas de la lógica empresarial. OWASP ofrece recomendaciones sobre cómo realizar pruebas y protegerse contra ataques de lógica empresarial en https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/10-Business_Logic_Testing/01-Test_Business_Logic_Data_Validation.
+
+MITRE ha asignado la ID de Enumeración de Debilidades Comunes (CWE) 840 (CWE-840) a los errores de lógica empresarial. Puede obtener información detallada sobre CWE-840 en https://cwe.mitre.org/data/definitions/840.html. Ese sitio web también proporciona varios ejemplos granulares de fallas de lógica empresarial, incluidos los siguientes:
+
+Propiedad no verificada
+Omisión de autenticación mediante una ruta o canal alternativo
+Omisión de autorización mediante una clave controlada por el usuario
+Un mecanismo de recuperación de contraseña débil para contraseñas olvidadas
+Asignación incorrecta de propiedad
+Asignación de recursos sin límites o sin restricción de velocidad
+Liberación prematura de recursos durante la vida útil prevista
+Aplicación incorrecta de una sola, única acción
+Aplicación incorrecta de un flujo de trabajo conductual
+NOTA El sitio web MITRE indica que muchas fallas de la lógica empresarial están orientadas a los procesos empresariales, los flujos de aplicaciones y las secuencias de comportamientos. No todos están representados en el CWE como debilidades relacionadas con la validación de entrada, la administración de memoria, etc.
+
+
 
 
 
